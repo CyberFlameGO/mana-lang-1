@@ -6,4 +6,4 @@ cmake_minimum_required (VERSION 3.8)
 project ("mana-lang")
 
 # Include sub-projects.
-add_subdirectory ("mana-lang")
+add_subdirectory ("src")
