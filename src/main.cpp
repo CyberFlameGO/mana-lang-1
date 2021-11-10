@@ -22,7 +22,7 @@ using namespace mana::parser;
 using namespace antlr4;
 
 int main() {
-    // llvm::LLVMContext context;
+     llvm::LLVMContext context;
 
     ANTLRInputStream input(u8"🍴 = 🍐 + \"😎\";(((x * π))) * µ + ∰; a + (x * (y ? 0 : 1) + z);");
     ManaLexer lexer(&input);
