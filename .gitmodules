@@ -1,0 +1,3 @@
+[submodule "vendor/antlr4-cpp-runtime"]
+	path = vendor/antlr4-cpp-runtime
+	url = https://github.com/kivikakk/antlr4-cpp-runtime

@@ -23,12 +23,7 @@ add_definitions(-DANTLR4CPP_STATIC)
 # Uncomment if compiling with Visual C++
 # set(ANTLR4_WITH_STATIC_CRT ON)
 
-# Add specific ANTLR include path so the ANTLR headers play nice
-include_directories(${PROJECT_SOURCE_DIR}/include/antlr)
-include_directories(${PROJECT_SOURCE_DIR}/include)
-
-# So portable honestly it's incredible (we'll fix it somehow)
-set(antlr_static "${PROJECT_SOURCE_DIR}/libs/libantlr4-runtime.a")
+add_subdirectory(vendor/antlr4-cpp-runtime)
 
 add_executable(mana 
     src/main.cpp 
@@ -37,7 +32,7 @@ add_executable(mana
 )
 
 target_link_libraries(mana 
-    ${antlr_static}
+    antlr4_cpp_runtime
     ${llvm_libs}
 )
 
