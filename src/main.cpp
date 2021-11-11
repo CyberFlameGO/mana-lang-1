@@ -10,7 +10,7 @@
 #include <llvm/IR/Type.h>
 #include <llvm/IR/Verifier.h>
 
-#include <antlr/antlr4-runtime.h>
+#include <antlr4-runtime.h>
 
 #include <iostream>
 
