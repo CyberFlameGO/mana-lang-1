@@ -27,8 +27,8 @@ add_subdirectory(vendor/antlr4-cpp-runtime)
 
 add_executable(mana 
     src/main.cpp 
-    src/parser/ManaLexer.cpp 
-    src/parser/ManaParser.cpp
+    src/parser/grammar/generated/manaLexer.cpp 
+    src/parser/grammar/generated/manaParser.cpp
 )
 
 target_link_libraries(mana 
