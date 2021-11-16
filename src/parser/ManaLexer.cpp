@@ -1,51 +1,50 @@
 
-// Generated from /home/nyx/dev/mana/mana-lang/src/parser/grammar/mana.g4 by ANTLR 4.9.3
+// Generated from /home/nyx/dev/mana/mana-lang/src/parser/grammar/Mana.g4 by ANTLR 4.9.3
 
 
-#include "manaLexer.h"
+#include "ManaLexer.h"
 
 
 using namespace antlr4;
 
-using namespace mana;
 
-manaLexer::manaLexer(CharStream *input) : Lexer(input) {
+ManaLexer::ManaLexer(CharStream *input) : Lexer(input) {
   _interpreter = new atn::LexerATNSimulator(this, _atn, _decisionToDFA, _sharedContextCache);
 }
 
-manaLexer::~manaLexer() {
+ManaLexer::~ManaLexer() {
   delete _interpreter;
 }
 
-std::string manaLexer::getGrammarFileName() const {
-  return "mana.g4";
+std::string ManaLexer::getGrammarFileName() const {
+  return "Mana.g4";
 }
 
-const std::vector<std::string>& manaLexer::getRuleNames() const {
+const std::vector<std::string>& ManaLexer::getRuleNames() const {
   return _ruleNames;
 }
 
-const std::vector<std::string>& manaLexer::getChannelNames() const {
+const std::vector<std::string>& ManaLexer::getChannelNames() const {
   return _channelNames;
 }
 
-const std::vector<std::string>& manaLexer::getModeNames() const {
+const std::vector<std::string>& ManaLexer::getModeNames() const {
   return _modeNames;
 }
 
-const std::vector<std::string>& manaLexer::getTokenNames() const {
+const std::vector<std::string>& ManaLexer::getTokenNames() const {
   return _tokenNames;
 }
 
-dfa::Vocabulary& manaLexer::getVocabulary() const {
+dfa::Vocabulary& ManaLexer::getVocabulary() const {
   return _vocabulary;
 }
 
-const std::vector<uint16_t> manaLexer::getSerializedATN() const {
+const std::vector<uint16_t> ManaLexer::getSerializedATN() const {
   return _serializedATN;
 }
 
-const atn::ATN& manaLexer::getATN() const {
+const atn::ATN& ManaLexer::getATN() const {
   return _atn;
 }
 
@@ -53,41 +52,41 @@ const atn::ATN& manaLexer::getATN() const {
 
 
 // Static vars and initialization.
-std::vector<dfa::DFA> manaLexer::_decisionToDFA;
-atn::PredictionContextCache manaLexer::_sharedContextCache;
+std::vector<dfa::DFA> ManaLexer::_decisionToDFA;
+atn::PredictionContextCache ManaLexer::_sharedContextCache;
 
 // We own the ATN which in turn owns the ATN states.
-atn::ATN manaLexer::_atn;
-std::vector<uint16_t> manaLexer::_serializedATN;
+atn::ATN ManaLexer::_atn;
+std::vector<uint16_t> ManaLexer::_serializedATN;
 
-std::vector<std::string> manaLexer::_ruleNames = {
+std::vector<std::string> ManaLexer::_ruleNames = {
   "T__0", "T__1", "KEY_FN", "KEY_LET", "TYPE_I32", "ASSIGN", "MUL", "DIV", 
   "ADD", "SUB", "ID", "INT", "NEWLINE", "WS"
 };
 
-std::vector<std::string> manaLexer::_channelNames = {
+std::vector<std::string> ManaLexer::_channelNames = {
   "DEFAULT_TOKEN_CHANNEL", "HIDDEN"
 };
 
-std::vector<std::string> manaLexer::_modeNames = {
+std::vector<std::string> ManaLexer::_modeNames = {
   "DEFAULT_MODE"
 };
 
-std::vector<std::string> manaLexer::_literalNames = {
+std::vector<std::string> ManaLexer::_literalNames = {
   "", "'('", "')'", "'fn'", "'let'", "'i32'", "'='", "'*'", "'/'", "'+'", 
   "'-'"
 };
 
-std::vector<std::string> manaLexer::_symbolicNames = {
+std::vector<std::string> ManaLexer::_symbolicNames = {
   "", "", "", "KEY_FN", "KEY_LET", "TYPE_I32", "ASSIGN", "MUL", "DIV", "ADD", 
   "SUB", "ID", "INT", "NEWLINE", "WS"
 };
 
-dfa::Vocabulary manaLexer::_vocabulary(_literalNames, _symbolicNames);
+dfa::Vocabulary ManaLexer::_vocabulary(_literalNames, _symbolicNames);
 
-std::vector<std::string> manaLexer::_tokenNames;
+std::vector<std::string> ManaLexer::_tokenNames;
 
-manaLexer::Initializer::Initializer() {
+ManaLexer::Initializer::Initializer() {
   // This code could be in a static initializer lambda, but VS doesn't allow access to private class members from there.
 	for (size_t i = 0; i < _symbolicNames.size(); ++i) {
 		std::string name = _vocabulary.getLiteralName(i);
@@ -175,4 +174,4 @@ manaLexer::Initializer::Initializer() {
   }
 }
 
-manaLexer::Initializer manaLexer::_init;
+ManaLexer::Initializer ManaLexer::_init;

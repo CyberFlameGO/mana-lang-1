@@ -1,5 +1,5 @@
 
-// Generated from /home/nyx/dev/mana/mana-lang/src/parser/grammar/mana.g4 by ANTLR 4.9.3
+// Generated from /home/nyx/dev/mana/mana-lang/src/parser/grammar/Mana.g4 by ANTLR 4.9.3
 
 #pragma once
 
@@ -7,10 +7,9 @@
 #include "antlr4-runtime.h"
 
 
-namespace mana {
 
 
-class  manaParser : public antlr4::Parser {
+class  ManaParser : public antlr4::Parser {
 public:
   enum {
     T__0 = 1, T__1 = 2, KEY_FN = 3, KEY_LET = 4, TYPE_I32 = 5, ASSIGN = 6, 
@@ -19,11 +18,11 @@ public:
   };
 
   enum {
-    RuleProg = 0, RuleStmt = 1, RuleExpr = 2
+    RuleProg = 0, RuleStmt = 1, RuleExpr = 2, RuleArithm = 3
   };
 
-  explicit manaParser(antlr4::TokenStream *input);
-  ~manaParser();
+  explicit ManaParser(antlr4::TokenStream *input);
+  ~ManaParser();
 
   virtual std::string getGrammarFileName() const override;
   virtual const antlr4::atn::ATN& getATN() const override { return _atn; };
@@ -34,7 +33,8 @@ public:
 
   class ProgContext;
   class StmtContext;
-  class ExprContext; 
+  class ExprContext;
+  class ArithmContext; 
 
   class  ProgContext : public antlr4::ParserRuleContext {
   public:
@@ -100,9 +100,22 @@ public:
   class  ExprContext : public antlr4::ParserRuleContext {
   public:
     ExprContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    ArithmContext *arithm();
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
    
-    ExprContext() = default;
-    void copyFrom(ExprContext *context);
+  };
+
+  ExprContext* expr();
+
+  class  ArithmContext : public antlr4::ParserRuleContext {
+  public:
+    ArithmContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+   
+    ArithmContext() = default;
+    void copyFrom(ArithmContext *context);
     using antlr4::ParserRuleContext::copyFrom;
 
     virtual size_t getRuleIndex() const override;
@@ -110,64 +123,68 @@ public:
    
   };
 
-  class  IdentifierContext : public ExprContext {
+  class  IdentifierContext : public ArithmContext {
   public:
-    IdentifierContext(ExprContext *ctx);
+    IdentifierContext(ArithmContext *ctx);
 
     antlr4::tree::TerminalNode *ID();
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
   };
 
-  class  MulDivContext : public ExprContext {
+  class  MulDivContext : public ArithmContext {
   public:
-    MulDivContext(ExprContext *ctx);
+    MulDivContext(ArithmContext *ctx);
 
+    ManaParser::ArithmContext *left = nullptr;
     antlr4::Token *op = nullptr;
-    std::vector<ExprContext *> expr();
-    ExprContext* expr(size_t i);
+    ManaParser::ArithmContext *right = nullptr;
+    std::vector<ArithmContext *> arithm();
+    ArithmContext* arithm(size_t i);
     antlr4::tree::TerminalNode *MUL();
     antlr4::tree::TerminalNode *DIV();
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
   };
 
-  class  AddSubContext : public ExprContext {
+  class  AddSubContext : public ArithmContext {
   public:
-    AddSubContext(ExprContext *ctx);
+    AddSubContext(ArithmContext *ctx);
 
+    ManaParser::ArithmContext *left = nullptr;
     antlr4::Token *op = nullptr;
-    std::vector<ExprContext *> expr();
-    ExprContext* expr(size_t i);
+    ManaParser::ArithmContext *right = nullptr;
+    std::vector<ArithmContext *> arithm();
+    ArithmContext* arithm(size_t i);
     antlr4::tree::TerminalNode *ADD();
     antlr4::tree::TerminalNode *SUB();
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
   };
 
-  class  ParensExprContext : public ExprContext {
+  class  ParensExprContext : public ArithmContext {
   public:
-    ParensExprContext(ExprContext *ctx);
+    ParensExprContext(ArithmContext *ctx);
 
-    ExprContext *expr();
+    ArithmContext *arithm();
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
   };
 
-  class  IntContext : public ExprContext {
+  class  IntContext : public ArithmContext {
   public:
-    IntContext(ExprContext *ctx);
+    IntContext(ArithmContext *ctx);
 
     antlr4::tree::TerminalNode *INT();
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
   };
 
-  ExprContext* expr();
-  ExprContext* expr(int precedence);
+  ArithmContext* arithm();
+  ArithmContext* arithm(int precedence);
 
   virtual bool sempred(antlr4::RuleContext *_localctx, size_t ruleIndex, size_t predicateIndex) override;
-  bool exprSempred(ExprContext *_localctx, size_t predicateIndex);
+  bool arithmSempred(ArithmContext *_localctx, size_t predicateIndex);
 
 private:
   static std::vector<antlr4::dfa::DFA> _decisionToDFA;
@@ -188,4 +205,3 @@ private:
   static Initializer _init;
 };
 
-}  // namespace mana

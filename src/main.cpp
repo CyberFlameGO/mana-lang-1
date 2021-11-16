@@ -1,7 +1,7 @@
 // #include "build_test.hpp"
-#include "parser/manaParser.h"
-#include "parser/manaLexer.h"
-#include "parser/manaBaseVisitor.h"
+#include "parser/ManaParser.h"
+#include "parser/ManaLexer.h"
+#include "parser/ManaBaseVisitor.h"
 #include "antlr4-runtime.h"
 
 #include <fstream>
@@ -13,56 +13,67 @@
 
 const std::string PATH("../parse_input/main.mana");
 
-class mana_visitor : public mana::manaBaseVisitor {
+class mana_visitor : public ManaBaseVisitor {
 public:
     std::map<std::string, int> memory;
 
-    virtual antlrcpp::Any visitAssign(mana::manaParser::AssignContext *ctx) override {
+    // Associate assigned value to given identifier
+    virtual antlrcpp::Any visitAssign(ManaParser::AssignContext *ctx) override {
         std::string id = ctx->ID()->getText();
         int value = visit(ctx->expr()).as<int>();
+
+        // Store assigned value in map
         memory.insert(std::make_pair(id, value));
         return value;
     }
 
-    virtual antlrcpp::Any visitPrintExpr(mana::manaParser::PrintExprContext *ctx) override {
+    // For standalone expressions (i.e. a lone number) we print them to console
+    virtual antlrcpp::Any visitPrintExpr(ManaParser::PrintExprContext *ctx) override {
         int value = visit(ctx->expr()).as<int>();
         std::cout << value << "\n";
         return 0;
     }
 
-    virtual antlrcpp::Any visitInt(mana::manaParser::IntContext *ctx) override {
+    // Convert any parsed integer literals to actual ints
+    virtual antlrcpp::Any visitInt(ManaParser::IntContext *ctx) override {
         return std::stoi(ctx->INT()->getText());
     }
 
-    virtual antlrcpp::Any visitIdentifier(mana::manaParser::IdentifierContext *ctx) override {
+    // No clue what this is supposed to be doing
+    virtual antlrcpp::Any visitIdentifier(ManaParser::IdentifierContext *ctx) override {
         std::string id = ctx->ID()->getText();
-        const auto found = memory.find(id);
+        const auto& found = memory.find(id);
         if (found != memory.end())
             return found->second;
 
         return 0;
     }
 
-    virtual antlrcpp::Any visitMulDiv(mana::manaParser::MulDivContext *ctx) override {
-        int left = visit(ctx->expr(0)).as<int>();
-        int right = visit(ctx->expr(1)).as<int>();
+
+    // Multiplication and division
+    virtual antlrcpp::Any visitMulDiv(ManaParser::MulDivContext *ctx) override {
+        const int left  = visit(ctx->left).as<int>();
+        const int right = visit(ctx->right).as<int>();
         
-        if (ctx->op->getType() == mana::manaParser::MUL)
+        if (ctx->op->getType() == ManaParser::MUL)
             return left * right;
         return left / right;
+        return 0;
     }
 
-    virtual antlrcpp::Any visitAddSub(mana::manaParser::AddSubContext *ctx) override {
-        int left = visit(ctx->expr(0)).as<int>();
-        int right = visit(ctx->expr(1)).as<int>();
+    // Addition and subtraction
+    virtual antlrcpp::Any visitAddSub(ManaParser::AddSubContext *ctx) override {
+        const int left  = visit(ctx->left).as<int>();
+        const int right = visit(ctx->right).as<int>();
         
-        if (ctx->op->getType() == mana::manaParser::ADD)
+        if (ctx->op->getType() == ManaParser::ADD)
             return left + right;
         return left - right;
+        return 0;
     }
 
-    virtual antlrcpp::Any visitParensExpr(mana::manaParser::ParensExprContext *ctx) override {
-        return visit(ctx->expr());
+    virtual antlrcpp::Any visitParensExpr(ManaParser::ParensExprContext *ctx) override {
+        return visit(ctx->arithm());
     }   
 };
 
@@ -71,7 +82,7 @@ int main() {
     std::ifstream file(PATH);
     if (file.is_open()) {
         antlr4::ANTLRInputStream input(file);
-        mana::manaLexer lexer(&input);
+        ManaLexer lexer(&input);
         antlr4::CommonTokenStream tokens(&lexer);
 
         tokens.fill();
@@ -79,7 +90,7 @@ int main() {
             std::cout << token->toString() << "\n";
         }
 
-        mana::manaParser parser(&tokens);
+        ManaParser parser(&tokens);
         antlr4::tree::ParseTree* tree = parser.prog();
 
         mana_visitor visitor;

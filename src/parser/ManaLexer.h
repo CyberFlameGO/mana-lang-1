@@ -1,5 +1,5 @@
 
-// Generated from /home/nyx/dev/mana/mana-lang/src/parser/grammar/mana.g4 by ANTLR 4.9.3
+// Generated from /home/nyx/dev/mana/mana-lang/src/parser/grammar/Mana.g4 by ANTLR 4.9.3
 
 #pragma once
 
@@ -7,10 +7,9 @@
 #include "antlr4-runtime.h"
 
 
-namespace mana {
 
 
-class  manaLexer : public antlr4::Lexer {
+class  ManaLexer : public antlr4::Lexer {
 public:
   enum {
     T__0 = 1, T__1 = 2, KEY_FN = 3, KEY_LET = 4, TYPE_I32 = 5, ASSIGN = 6, 
@@ -18,8 +17,8 @@ public:
     WS = 14
   };
 
-  explicit manaLexer(antlr4::CharStream *input);
-  ~manaLexer();
+  explicit ManaLexer(antlr4::CharStream *input);
+  ~ManaLexer();
 
   virtual std::string getGrammarFileName() const override;
   virtual const std::vector<std::string>& getRuleNames() const override;
@@ -57,4 +56,3 @@ private:
   static Initializer _init;
 };
 
-}  // namespace mana

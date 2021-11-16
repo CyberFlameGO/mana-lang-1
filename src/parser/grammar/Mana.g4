@@ -1,4 +1,4 @@
-grammar mana;
+grammar Mana;
 
 prog: stmt+ EOF;    
 
@@ -9,13 +9,15 @@ stmt: expr NEWLINE           # PrintExpr
     | NEWLINE                # Blank
     ;
 
-expr: expr op=(MUL|DIV) expr # MulDiv
-    | expr op=(ADD|SUB) expr # AddSub
-    | INT                    # Int
-    | ID                     # Identifier
-    | '(' expr ')'           # ParensExpr
+expr: arithm
     ;
 
+arithm: left=arithm op=(MUL|DIV) right=arithm # MulDiv
+      | left=arithm op=(ADD|SUB) right=arithm # AddSub
+      | INT                        # Int
+      | ID                         # Identifier
+      | '(' arithm ')'             # ParensExpr
+      ;
 
 KEY_FN  : 'fn'           ;
 KEY_LET : 'let'          ;
