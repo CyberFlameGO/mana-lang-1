@@ -13,7 +13,7 @@
 
 const std::string PATH("../parse_input/main.mana");
 
-class mana_visitor : public ManaBaseVisitor {
+class ast_visitor : public ManaBaseVisitor {
 public:
     std::map<std::string, int> memory;
 
@@ -72,6 +72,10 @@ public:
         return 0;
     }
 
+    virtual antlrcpp::Any visitLocalScope(ManaParser::LocalScopeContext *ctx) override {
+        return 0;
+    }
+
     virtual antlrcpp::Any visitParensExpr(ManaParser::ParensExprContext *ctx) override {
         return visit(ctx->arithm());
     }   
@@ -93,7 +97,7 @@ int main() {
         ManaParser parser(&tokens);
         antlr4::tree::ParseTree* tree = parser.prog();
 
-        mana_visitor visitor;
+        ast_visitor visitor;
         visitor.visit(tree);
 
         file.close();

@@ -27,6 +27,10 @@ public:
 
     virtual antlrcpp::Any visitBlank(ManaParser::BlankContext *context) = 0;
 
+    virtual antlrcpp::Any visitGlobalScope(ManaParser::GlobalScopeContext *context) = 0;
+
+    virtual antlrcpp::Any visitLocalScope(ManaParser::LocalScopeContext *context) = 0;
+
     virtual antlrcpp::Any visitExpr(ManaParser::ExprContext *context) = 0;
 
     virtual antlrcpp::Any visitIdentifier(ManaParser::IdentifierContext *context) = 0;

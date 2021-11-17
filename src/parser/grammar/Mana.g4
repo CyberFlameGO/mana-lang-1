@@ -9,14 +9,19 @@ stmt: expr NEWLINE           # PrintExpr
     | NEWLINE                # Blank
     ;
 
+scope: expr          # GlobalScope
+//     | scope         # LocalScope
+     | '{' expr '}'  # LocalScope
+     ;
+
 expr: arithm
     ;
 
 arithm: left=arithm op=(MUL|DIV) right=arithm # MulDiv
       | left=arithm op=(ADD|SUB) right=arithm # AddSub
-      | INT                        # Int
-      | ID                         # Identifier
-      | '(' arithm ')'             # ParensExpr
+      | INT             # Int
+      | ID              # Identifier
+      | '(' arithm ')'  # ParensExpr
       ;
 
 KEY_FN  : 'fn'           ;

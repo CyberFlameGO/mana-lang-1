@@ -31,6 +31,14 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual antlrcpp::Any visitGlobalScope(ManaParser::GlobalScopeContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitLocalScope(ManaParser::LocalScopeContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual antlrcpp::Any visitExpr(ManaParser::ExprContext *ctx) override {
     return visitChildren(ctx);
   }

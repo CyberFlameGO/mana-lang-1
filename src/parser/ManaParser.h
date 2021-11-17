@@ -12,13 +12,13 @@
 class  ManaParser : public antlr4::Parser {
 public:
   enum {
-    T__0 = 1, T__1 = 2, KEY_FN = 3, KEY_LET = 4, TYPE_I32 = 5, ASSIGN = 6, 
-    MUL = 7, DIV = 8, ADD = 9, SUB = 10, ID = 11, INT = 12, NEWLINE = 13, 
-    WS = 14
+    T__0 = 1, T__1 = 2, T__2 = 3, T__3 = 4, KEY_FN = 5, KEY_LET = 6, TYPE_I32 = 7, 
+    ASSIGN = 8, MUL = 9, DIV = 10, ADD = 11, SUB = 12, ID = 13, INT = 14, 
+    NEWLINE = 15, WS = 16
   };
 
   enum {
-    RuleProg = 0, RuleStmt = 1, RuleExpr = 2, RuleArithm = 3
+    RuleProg = 0, RuleStmt = 1, RuleScope = 2, RuleExpr = 3, RuleArithm = 4
   };
 
   explicit ManaParser(antlr4::TokenStream *input);
@@ -33,6 +33,7 @@ public:
 
   class ProgContext;
   class StmtContext;
+  class ScopeContext;
   class ExprContext;
   class ArithmContext; 
 
@@ -96,6 +97,39 @@ public:
   };
 
   StmtContext* stmt();
+
+  class  ScopeContext : public antlr4::ParserRuleContext {
+  public:
+    ScopeContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+   
+    ScopeContext() = default;
+    void copyFrom(ScopeContext *context);
+    using antlr4::ParserRuleContext::copyFrom;
+
+    virtual size_t getRuleIndex() const override;
+
+   
+  };
+
+  class  GlobalScopeContext : public ScopeContext {
+  public:
+    GlobalScopeContext(ScopeContext *ctx);
+
+    ExprContext *expr();
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+  };
+
+  class  LocalScopeContext : public ScopeContext {
+  public:
+    LocalScopeContext(ScopeContext *ctx);
+
+    ExprContext *expr();
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+  };
+
+  ScopeContext* scope();
 
   class  ExprContext : public antlr4::ParserRuleContext {
   public:

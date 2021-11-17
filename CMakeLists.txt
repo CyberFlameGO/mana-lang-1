@@ -38,11 +38,3 @@ target_link_libraries(mana
     ${llvm_libs}
 )
 
-# These are required since we are using LLVM with SanitizeAddress enabled
-target_compile_options(mana PUBLIC
-    -fsanitize=address
-)
-
-target_link_options(mana PUBLIC
-    -fsanitize=address
-)
