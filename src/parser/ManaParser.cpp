@@ -41,12 +41,12 @@ tree::TerminalNode* ManaParser::ProgContext::EOF() {
   return getToken(ManaParser::EOF, 0);
 }
 
-std::vector<ManaParser::StmtContext *> ManaParser::ProgContext::stmt() {
-  return getRuleContexts<ManaParser::StmtContext>();
+std::vector<ManaParser::FunctionContext *> ManaParser::ProgContext::function() {
+  return getRuleContexts<ManaParser::FunctionContext>();
 }
 
-ManaParser::StmtContext* ManaParser::ProgContext::stmt(size_t i) {
-  return getRuleContext<ManaParser::StmtContext>(i);
+ManaParser::FunctionContext* ManaParser::ProgContext::function(size_t i) {
+  return getRuleContext<ManaParser::FunctionContext>(i);
 }
 
 
@@ -76,21 +76,17 @@ ManaParser::ProgContext* ManaParser::prog() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(11); 
+    setState(15); 
     _errHandler->sync(this);
     _la = _input->LA(1);
     do {
-      setState(10);
-      stmt();
-      setState(13); 
+      setState(14);
+      function();
+      setState(17); 
       _errHandler->sync(this);
       _la = _input->LA(1);
-    } while ((((_la & ~ 0x3fULL) == 0) &&
-      ((1ULL << _la) & ((1ULL << ManaParser::T__2)
-      | (1ULL << ManaParser::ID)
-      | (1ULL << ManaParser::INT)
-      | (1ULL << ManaParser::NEWLINE))) != 0));
-    setState(15);
+    } while (_la == ManaParser::KEY_FN);
+    setState(19);
     match(ManaParser::EOF);
    
   }
@@ -103,85 +99,47 @@ ManaParser::ProgContext* ManaParser::prog() {
   return _localctx;
 }
 
-//----------------- StmtContext ------------------------------------------------------------------
+//----------------- FunctionContext ------------------------------------------------------------------
 
-ManaParser::StmtContext::StmtContext(ParserRuleContext *parent, size_t invokingState)
+ManaParser::FunctionContext::FunctionContext(ParserRuleContext *parent, size_t invokingState)
   : ParserRuleContext(parent, invokingState) {
 }
 
 
-size_t ManaParser::StmtContext::getRuleIndex() const {
-  return ManaParser::RuleStmt;
+size_t ManaParser::FunctionContext::getRuleIndex() const {
+  return ManaParser::RuleFunction;
 }
 
-void ManaParser::StmtContext::copyFrom(StmtContext *ctx) {
+void ManaParser::FunctionContext::copyFrom(FunctionContext *ctx) {
   ParserRuleContext::copyFrom(ctx);
 }
 
-//----------------- BlankContext ------------------------------------------------------------------
+//----------------- FunctionDefinitionContext ------------------------------------------------------------------
 
-tree::TerminalNode* ManaParser::BlankContext::NEWLINE() {
-  return getToken(ManaParser::NEWLINE, 0);
+tree::TerminalNode* ManaParser::FunctionDefinitionContext::KEY_FN() {
+  return getToken(ManaParser::KEY_FN, 0);
 }
 
-ManaParser::BlankContext::BlankContext(StmtContext *ctx) { copyFrom(ctx); }
-
-
-antlrcpp::Any ManaParser::BlankContext::accept(tree::ParseTreeVisitor *visitor) {
-  if (auto parserVisitor = dynamic_cast<ManaVisitor*>(visitor))
-    return parserVisitor->visitBlank(this);
-  else
-    return visitor->visitChildren(this);
-}
-//----------------- AssignContext ------------------------------------------------------------------
-
-tree::TerminalNode* ManaParser::AssignContext::ID() {
+tree::TerminalNode* ManaParser::FunctionDefinitionContext::ID() {
   return getToken(ManaParser::ID, 0);
 }
 
-tree::TerminalNode* ManaParser::AssignContext::ASSIGN() {
-  return getToken(ManaParser::ASSIGN, 0);
+ManaParser::ScopeContext* ManaParser::FunctionDefinitionContext::scope() {
+  return getRuleContext<ManaParser::ScopeContext>(0);
 }
 
-ManaParser::ExprContext* ManaParser::AssignContext::expr() {
-  return getRuleContext<ManaParser::ExprContext>(0);
-}
-
-tree::TerminalNode* ManaParser::AssignContext::NEWLINE() {
-  return getToken(ManaParser::NEWLINE, 0);
-}
-
-ManaParser::AssignContext::AssignContext(StmtContext *ctx) { copyFrom(ctx); }
+ManaParser::FunctionDefinitionContext::FunctionDefinitionContext(FunctionContext *ctx) { copyFrom(ctx); }
 
 
-antlrcpp::Any ManaParser::AssignContext::accept(tree::ParseTreeVisitor *visitor) {
+antlrcpp::Any ManaParser::FunctionDefinitionContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<ManaVisitor*>(visitor))
-    return parserVisitor->visitAssign(this);
+    return parserVisitor->visitFunctionDefinition(this);
   else
     return visitor->visitChildren(this);
 }
-//----------------- PrintExprContext ------------------------------------------------------------------
-
-ManaParser::ExprContext* ManaParser::PrintExprContext::expr() {
-  return getRuleContext<ManaParser::ExprContext>(0);
-}
-
-tree::TerminalNode* ManaParser::PrintExprContext::NEWLINE() {
-  return getToken(ManaParser::NEWLINE, 0);
-}
-
-ManaParser::PrintExprContext::PrintExprContext(StmtContext *ctx) { copyFrom(ctx); }
-
-
-antlrcpp::Any ManaParser::PrintExprContext::accept(tree::ParseTreeVisitor *visitor) {
-  if (auto parserVisitor = dynamic_cast<ManaVisitor*>(visitor))
-    return parserVisitor->visitPrintExpr(this);
-  else
-    return visitor->visitChildren(this);
-}
-ManaParser::StmtContext* ManaParser::stmt() {
-  StmtContext *_localctx = _tracker.createInstance<StmtContext>(_ctx, getState());
-  enterRule(_localctx, 2, ManaParser::RuleStmt);
+ManaParser::FunctionContext* ManaParser::function() {
+  FunctionContext *_localctx = _tracker.createInstance<FunctionContext>(_ctx, getState());
+  enterRule(_localctx, 2, ManaParser::RuleFunction);
 
 #if __cplusplus > 201703L
   auto onExit = finally([=, this] {
@@ -191,44 +149,18 @@ ManaParser::StmtContext* ManaParser::stmt() {
     exitRule();
   });
   try {
-    setState(26);
-    _errHandler->sync(this);
-    switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 1, _ctx)) {
-    case 1: {
-      _localctx = _tracker.createInstance<ManaParser::PrintExprContext>(_localctx);
-      enterOuterAlt(_localctx, 1);
-      setState(17);
-      expr();
-      setState(18);
-      match(ManaParser::NEWLINE);
-      break;
-    }
-
-    case 2: {
-      _localctx = _tracker.createInstance<ManaParser::AssignContext>(_localctx);
-      enterOuterAlt(_localctx, 2);
-      setState(20);
-      match(ManaParser::ID);
-      setState(21);
-      match(ManaParser::ASSIGN);
-      setState(22);
-      expr();
-      setState(23);
-      match(ManaParser::NEWLINE);
-      break;
-    }
-
-    case 3: {
-      _localctx = _tracker.createInstance<ManaParser::BlankContext>(_localctx);
-      enterOuterAlt(_localctx, 3);
-      setState(25);
-      match(ManaParser::NEWLINE);
-      break;
-    }
-
-    default:
-      break;
-    }
+    _localctx = _tracker.createInstance<ManaParser::FunctionDefinitionContext>(_localctx);
+    enterOuterAlt(_localctx, 1);
+    setState(21);
+    match(ManaParser::KEY_FN);
+    setState(22);
+    match(ManaParser::ID);
+    setState(23);
+    match(ManaParser::T__0);
+    setState(24);
+    match(ManaParser::T__1);
+    setState(25);
+    scope();
    
   }
   catch (RecognitionException &e) {
@@ -255,25 +187,14 @@ void ManaParser::ScopeContext::copyFrom(ScopeContext *ctx) {
   ParserRuleContext::copyFrom(ctx);
 }
 
-//----------------- GlobalScopeContext ------------------------------------------------------------------
-
-ManaParser::ExprContext* ManaParser::GlobalScopeContext::expr() {
-  return getRuleContext<ManaParser::ExprContext>(0);
-}
-
-ManaParser::GlobalScopeContext::GlobalScopeContext(ScopeContext *ctx) { copyFrom(ctx); }
-
-
-antlrcpp::Any ManaParser::GlobalScopeContext::accept(tree::ParseTreeVisitor *visitor) {
-  if (auto parserVisitor = dynamic_cast<ManaVisitor*>(visitor))
-    return parserVisitor->visitGlobalScope(this);
-  else
-    return visitor->visitChildren(this);
-}
 //----------------- LocalScopeContext ------------------------------------------------------------------
 
-ManaParser::ExprContext* ManaParser::LocalScopeContext::expr() {
-  return getRuleContext<ManaParser::ExprContext>(0);
+std::vector<ManaParser::StmtContext *> ManaParser::LocalScopeContext::stmt() {
+  return getRuleContexts<ManaParser::StmtContext>();
+}
+
+ManaParser::StmtContext* ManaParser::LocalScopeContext::stmt(size_t i) {
+  return getRuleContext<ManaParser::StmtContext>(i);
 }
 
 ManaParser::LocalScopeContext::LocalScopeContext(ScopeContext *ctx) { copyFrom(ctx); }
@@ -288,6 +209,7 @@ antlrcpp::Any ManaParser::LocalScopeContext::accept(tree::ParseTreeVisitor *visi
 ManaParser::ScopeContext* ManaParser::scope() {
   ScopeContext *_localctx = _tracker.createInstance<ScopeContext>(_ctx, getState());
   enterRule(_localctx, 4, ManaParser::RuleScope);
+  size_t _la = 0;
 
 #if __cplusplus > 201703L
   auto onExit = finally([=, this] {
@@ -297,33 +219,174 @@ ManaParser::ScopeContext* ManaParser::scope() {
     exitRule();
   });
   try {
-    setState(33);
+    _localctx = _tracker.createInstance<ManaParser::LocalScopeContext>(_localctx);
+    enterOuterAlt(_localctx, 1);
+    setState(27);
+    match(ManaParser::T__2);
+    setState(31);
     _errHandler->sync(this);
-    switch (_input->LA(1)) {
-      case ManaParser::T__2:
-      case ManaParser::ID:
-      case ManaParser::INT: {
-        _localctx = _tracker.createInstance<ManaParser::GlobalScopeContext>(_localctx);
-        enterOuterAlt(_localctx, 1);
-        setState(28);
-        expr();
-        break;
-      }
+    _la = _input->LA(1);
+    while ((((_la & ~ 0x3fULL) == 0) &&
+      ((1ULL << _la) & ((1ULL << ManaParser::T__0)
+      | (1ULL << ManaParser::END)
+      | (1ULL << ManaParser::ID)
+      | (1ULL << ManaParser::INT)
+      | (1ULL << ManaParser::NEWLINE))) != 0)) {
+      setState(28);
+      stmt();
+      setState(33);
+      _errHandler->sync(this);
+      _la = _input->LA(1);
+    }
+    setState(34);
+    match(ManaParser::T__3);
+   
+  }
+  catch (RecognitionException &e) {
+    _errHandler->reportError(this, e);
+    _localctx->exception = std::current_exception();
+    _errHandler->recover(this, _localctx->exception);
+  }
 
-      case ManaParser::T__0: {
-        _localctx = _tracker.createInstance<ManaParser::LocalScopeContext>(_localctx);
-        enterOuterAlt(_localctx, 2);
-        setState(29);
-        match(ManaParser::T__0);
-        setState(30);
-        expr();
-        setState(31);
-        match(ManaParser::T__1);
-        break;
-      }
+  return _localctx;
+}
+
+//----------------- StmtContext ------------------------------------------------------------------
+
+ManaParser::StmtContext::StmtContext(ParserRuleContext *parent, size_t invokingState)
+  : ParserRuleContext(parent, invokingState) {
+}
+
+
+size_t ManaParser::StmtContext::getRuleIndex() const {
+  return ManaParser::RuleStmt;
+}
+
+void ManaParser::StmtContext::copyFrom(StmtContext *ctx) {
+  ParserRuleContext::copyFrom(ctx);
+}
+
+//----------------- EmptyStatementContext ------------------------------------------------------------------
+
+tree::TerminalNode* ManaParser::EmptyStatementContext::END() {
+  return getToken(ManaParser::END, 0);
+}
+
+ManaParser::EmptyStatementContext::EmptyStatementContext(StmtContext *ctx) { copyFrom(ctx); }
+
+
+antlrcpp::Any ManaParser::EmptyStatementContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<ManaVisitor*>(visitor))
+    return parserVisitor->visitEmptyStatement(this);
+  else
+    return visitor->visitChildren(this);
+}
+//----------------- EmptyLineContext ------------------------------------------------------------------
+
+tree::TerminalNode* ManaParser::EmptyLineContext::NEWLINE() {
+  return getToken(ManaParser::NEWLINE, 0);
+}
+
+ManaParser::EmptyLineContext::EmptyLineContext(StmtContext *ctx) { copyFrom(ctx); }
+
+
+antlrcpp::Any ManaParser::EmptyLineContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<ManaVisitor*>(visitor))
+    return parserVisitor->visitEmptyLine(this);
+  else
+    return visitor->visitChildren(this);
+}
+//----------------- PrintExprContext ------------------------------------------------------------------
+
+ManaParser::ExprContext* ManaParser::PrintExprContext::expr() {
+  return getRuleContext<ManaParser::ExprContext>(0);
+}
+
+tree::TerminalNode* ManaParser::PrintExprContext::END() {
+  return getToken(ManaParser::END, 0);
+}
+
+ManaParser::PrintExprContext::PrintExprContext(StmtContext *ctx) { copyFrom(ctx); }
+
+
+antlrcpp::Any ManaParser::PrintExprContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<ManaVisitor*>(visitor))
+    return parserVisitor->visitPrintExpr(this);
+  else
+    return visitor->visitChildren(this);
+}
+//----------------- DefaultAssignmentContext ------------------------------------------------------------------
+
+ManaParser::AssignContext* ManaParser::DefaultAssignmentContext::assign() {
+  return getRuleContext<ManaParser::AssignContext>(0);
+}
+
+tree::TerminalNode* ManaParser::DefaultAssignmentContext::END() {
+  return getToken(ManaParser::END, 0);
+}
+
+ManaParser::DefaultAssignmentContext::DefaultAssignmentContext(StmtContext *ctx) { copyFrom(ctx); }
+
+
+antlrcpp::Any ManaParser::DefaultAssignmentContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<ManaVisitor*>(visitor))
+    return parserVisitor->visitDefaultAssignment(this);
+  else
+    return visitor->visitChildren(this);
+}
+ManaParser::StmtContext* ManaParser::stmt() {
+  StmtContext *_localctx = _tracker.createInstance<StmtContext>(_ctx, getState());
+  enterRule(_localctx, 6, ManaParser::RuleStmt);
+
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
+  auto onExit = finally([=] {
+#endif
+    exitRule();
+  });
+  try {
+    setState(44);
+    _errHandler->sync(this);
+    switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 2, _ctx)) {
+    case 1: {
+      _localctx = _tracker.createInstance<ManaParser::PrintExprContext>(_localctx);
+      enterOuterAlt(_localctx, 1);
+      setState(36);
+      expr();
+      setState(37);
+      match(ManaParser::END);
+      break;
+    }
+
+    case 2: {
+      _localctx = _tracker.createInstance<ManaParser::DefaultAssignmentContext>(_localctx);
+      enterOuterAlt(_localctx, 2);
+      setState(39);
+      assign();
+      setState(40);
+      match(ManaParser::END);
+      break;
+    }
+
+    case 3: {
+      _localctx = _tracker.createInstance<ManaParser::EmptyStatementContext>(_localctx);
+      enterOuterAlt(_localctx, 3);
+      setState(42);
+      match(ManaParser::END);
+      break;
+    }
+
+    case 4: {
+      _localctx = _tracker.createInstance<ManaParser::EmptyLineContext>(_localctx);
+      enterOuterAlt(_localctx, 4);
+      setState(43);
+      match(ManaParser::NEWLINE);
+      break;
+    }
 
     default:
-      throw NoViableAltException(this);
+      break;
     }
    
   }
@@ -361,7 +424,7 @@ antlrcpp::Any ManaParser::ExprContext::accept(tree::ParseTreeVisitor *visitor) {
 
 ManaParser::ExprContext* ManaParser::expr() {
   ExprContext *_localctx = _tracker.createInstance<ExprContext>(_ctx, getState());
-  enterRule(_localctx, 6, ManaParser::RuleExpr);
+  enterRule(_localctx, 8, ManaParser::RuleExpr);
 
 #if __cplusplus > 201703L
   auto onExit = finally([=, this] {
@@ -372,8 +435,69 @@ ManaParser::ExprContext* ManaParser::expr() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(35);
+    setState(46);
     arithm(0);
+   
+  }
+  catch (RecognitionException &e) {
+    _errHandler->reportError(this, e);
+    _localctx->exception = std::current_exception();
+    _errHandler->recover(this, _localctx->exception);
+  }
+
+  return _localctx;
+}
+
+//----------------- AssignContext ------------------------------------------------------------------
+
+ManaParser::AssignContext::AssignContext(ParserRuleContext *parent, size_t invokingState)
+  : ParserRuleContext(parent, invokingState) {
+}
+
+tree::TerminalNode* ManaParser::AssignContext::ID() {
+  return getToken(ManaParser::ID, 0);
+}
+
+tree::TerminalNode* ManaParser::AssignContext::ASSIGN() {
+  return getToken(ManaParser::ASSIGN, 0);
+}
+
+ManaParser::ExprContext* ManaParser::AssignContext::expr() {
+  return getRuleContext<ManaParser::ExprContext>(0);
+}
+
+
+size_t ManaParser::AssignContext::getRuleIndex() const {
+  return ManaParser::RuleAssign;
+}
+
+
+antlrcpp::Any ManaParser::AssignContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<ManaVisitor*>(visitor))
+    return parserVisitor->visitAssign(this);
+  else
+    return visitor->visitChildren(this);
+}
+
+ManaParser::AssignContext* ManaParser::assign() {
+  AssignContext *_localctx = _tracker.createInstance<AssignContext>(_ctx, getState());
+  enterRule(_localctx, 10, ManaParser::RuleAssign);
+
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
+  auto onExit = finally([=] {
+#endif
+    exitRule();
+  });
+  try {
+    enterOuterAlt(_localctx, 1);
+    setState(48);
+    match(ManaParser::ID);
+    setState(49);
+    match(ManaParser::ASSIGN);
+    setState(50);
+    expr();
    
   }
   catch (RecognitionException &e) {
@@ -510,8 +634,8 @@ ManaParser::ArithmContext* ManaParser::arithm(int precedence) {
   ManaParser::ArithmContext *_localctx = _tracker.createInstance<ArithmContext>(_ctx, parentState);
   ManaParser::ArithmContext *previousContext = _localctx;
   (void)previousContext; // Silence compiler, in case the context is not used by generated code.
-  size_t startState = 8;
-  enterRecursionRule(_localctx, 8, ManaParser::RuleArithm, precedence);
+  size_t startState = 12;
+  enterRecursionRule(_localctx, 12, ManaParser::RuleArithm, precedence);
 
     size_t _la = 0;
 
@@ -525,7 +649,7 @@ ManaParser::ArithmContext* ManaParser::arithm(int precedence) {
   try {
     size_t alt;
     enterOuterAlt(_localctx, 1);
-    setState(44);
+    setState(59);
     _errHandler->sync(this);
     switch (_input->LA(1)) {
       case ManaParser::INT: {
@@ -533,7 +657,7 @@ ManaParser::ArithmContext* ManaParser::arithm(int precedence) {
         _ctx = _localctx;
         previousContext = _localctx;
 
-        setState(38);
+        setState(53);
         match(ManaParser::INT);
         break;
       }
@@ -542,21 +666,21 @@ ManaParser::ArithmContext* ManaParser::arithm(int precedence) {
         _localctx = _tracker.createInstance<IdentifierContext>(_localctx);
         _ctx = _localctx;
         previousContext = _localctx;
-        setState(39);
+        setState(54);
         match(ManaParser::ID);
         break;
       }
 
-      case ManaParser::T__2: {
+      case ManaParser::T__0: {
         _localctx = _tracker.createInstance<ParensExprContext>(_localctx);
         _ctx = _localctx;
         previousContext = _localctx;
-        setState(40);
-        match(ManaParser::T__2);
-        setState(41);
+        setState(55);
+        match(ManaParser::T__0);
+        setState(56);
         arithm(0);
-        setState(42);
-        match(ManaParser::T__3);
+        setState(57);
+        match(ManaParser::T__1);
         break;
       }
 
@@ -564,7 +688,7 @@ ManaParser::ArithmContext* ManaParser::arithm(int precedence) {
       throw NoViableAltException(this);
     }
     _ctx->stop = _input->LT(-1);
-    setState(54);
+    setState(69);
     _errHandler->sync(this);
     alt = getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 5, _ctx);
     while (alt != 2 && alt != atn::ATN::INVALID_ALT_NUMBER) {
@@ -572,7 +696,7 @@ ManaParser::ArithmContext* ManaParser::arithm(int precedence) {
         if (!_parseListeners.empty())
           triggerExitRuleEvent();
         previousContext = _localctx;
-        setState(52);
+        setState(67);
         _errHandler->sync(this);
         switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 4, _ctx)) {
         case 1: {
@@ -580,10 +704,10 @@ ManaParser::ArithmContext* ManaParser::arithm(int precedence) {
           _localctx = newContext;
           newContext->left = previousContext;
           pushNewRecursionContext(newContext, startState, RuleArithm);
-          setState(46);
+          setState(61);
 
           if (!(precpred(_ctx, 5))) throw FailedPredicateException(this, "precpred(_ctx, 5)");
-          setState(47);
+          setState(62);
           antlrcpp::downCast<MulDivContext *>(_localctx)->op = _input->LT(1);
           _la = _input->LA(1);
           if (!(_la == ManaParser::MUL
@@ -595,7 +719,7 @@ ManaParser::ArithmContext* ManaParser::arithm(int precedence) {
             _errHandler->reportMatch(this);
             consume();
           }
-          setState(48);
+          setState(63);
           antlrcpp::downCast<MulDivContext *>(_localctx)->right = arithm(6);
           break;
         }
@@ -605,10 +729,10 @@ ManaParser::ArithmContext* ManaParser::arithm(int precedence) {
           _localctx = newContext;
           newContext->left = previousContext;
           pushNewRecursionContext(newContext, startState, RuleArithm);
-          setState(49);
+          setState(64);
 
           if (!(precpred(_ctx, 4))) throw FailedPredicateException(this, "precpred(_ctx, 4)");
-          setState(50);
+          setState(65);
           antlrcpp::downCast<AddSubContext *>(_localctx)->op = _input->LT(1);
           _la = _input->LA(1);
           if (!(_la == ManaParser::ADD
@@ -620,7 +744,7 @@ ManaParser::ArithmContext* ManaParser::arithm(int precedence) {
             _errHandler->reportMatch(this);
             consume();
           }
-          setState(51);
+          setState(66);
           antlrcpp::downCast<AddSubContext *>(_localctx)->right = arithm(5);
           break;
         }
@@ -629,7 +753,7 @@ ManaParser::ArithmContext* ManaParser::arithm(int precedence) {
           break;
         } 
       }
-      setState(56);
+      setState(71);
       _errHandler->sync(this);
       alt = getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 5, _ctx);
     }
@@ -644,7 +768,7 @@ ManaParser::ArithmContext* ManaParser::arithm(int precedence) {
 
 bool ManaParser::sempred(RuleContext *context, size_t ruleIndex, size_t predicateIndex) {
   switch (ruleIndex) {
-    case 4: return arithmSempred(antlrcpp::downCast<ArithmContext *>(context), predicateIndex);
+    case 6: return arithmSempred(antlrcpp::downCast<ArithmContext *>(context), predicateIndex);
 
   default:
     break;
@@ -672,17 +796,17 @@ atn::ATN ManaParser::_atn;
 std::vector<uint16_t> ManaParser::_serializedATN;
 
 std::vector<std::string> ManaParser::_ruleNames = {
-  "prog", "stmt", "scope", "expr", "arithm"
+  "prog", "function", "scope", "stmt", "expr", "assign", "arithm"
 };
 
 std::vector<std::string> ManaParser::_literalNames = {
-  "", "'{'", "'}'", "'('", "')'", "'fn'", "'let'", "'i32'", "'='", "'*'", 
-  "'/'", "'+'", "'-'"
+  "", "'('", "')'", "'{'", "'}'", "'fn'", "'let'", "'i32'", "';'", "'='", 
+  "'*'", "'/'", "'+'", "'-'"
 };
 
 std::vector<std::string> ManaParser::_symbolicNames = {
-  "", "", "", "", "", "KEY_FN", "KEY_LET", "TYPE_I32", "ASSIGN", "MUL", 
-  "DIV", "ADD", "SUB", "ID", "INT", "NEWLINE", "WS"
+  "", "", "", "", "", "KEY_FN", "KEY_LET", "TYPE_I32", "END", "ASSIGN", 
+  "MUL", "DIV", "ADD", "SUB", "ID", "INT", "NEWLINE", "WS"
 };
 
 dfa::Vocabulary ManaParser::_vocabulary(_literalNames, _symbolicNames);
@@ -705,46 +829,55 @@ ManaParser::Initializer::Initializer() {
 
   static const uint16_t serializedATNSegment0[] = {
     0x3, 0x608b, 0xa72a, 0x8133, 0xb9ed, 0x417c, 0x3be7, 0x7786, 0x5964, 
-       0x3, 0x12, 0x3c, 0x4, 0x2, 0x9, 0x2, 0x4, 0x3, 0x9, 0x3, 0x4, 0x4, 
-       0x9, 0x4, 0x4, 0x5, 0x9, 0x5, 0x4, 0x6, 0x9, 0x6, 0x3, 0x2, 0x6, 
-       0x2, 0xe, 0xa, 0x2, 0xd, 0x2, 0xe, 0x2, 0xf, 0x3, 0x2, 0x3, 0x2, 
-       0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 
-       0x3, 0x3, 0x3, 0x3, 0x3, 0x5, 0x3, 0x1d, 0xa, 0x3, 0x3, 0x4, 0x3, 
-       0x4, 0x3, 0x4, 0x3, 0x4, 0x3, 0x4, 0x5, 0x4, 0x24, 0xa, 0x4, 0x3, 
-       0x5, 0x3, 0x5, 0x3, 0x6, 0x3, 0x6, 0x3, 0x6, 0x3, 0x6, 0x3, 0x6, 
-       0x3, 0x6, 0x3, 0x6, 0x5, 0x6, 0x2f, 0xa, 0x6, 0x3, 0x6, 0x3, 0x6, 
-       0x3, 0x6, 0x3, 0x6, 0x3, 0x6, 0x3, 0x6, 0x7, 0x6, 0x37, 0xa, 0x6, 
-       0xc, 0x6, 0xe, 0x6, 0x3a, 0xb, 0x6, 0x3, 0x6, 0x2, 0x3, 0xa, 0x7, 
-       0x2, 0x4, 0x6, 0x8, 0xa, 0x2, 0x4, 0x3, 0x2, 0xb, 0xc, 0x3, 0x2, 
-       0xd, 0xe, 0x2, 0x3e, 0x2, 0xd, 0x3, 0x2, 0x2, 0x2, 0x4, 0x1c, 0x3, 
-       0x2, 0x2, 0x2, 0x6, 0x23, 0x3, 0x2, 0x2, 0x2, 0x8, 0x25, 0x3, 0x2, 
-       0x2, 0x2, 0xa, 0x2e, 0x3, 0x2, 0x2, 0x2, 0xc, 0xe, 0x5, 0x4, 0x3, 
-       0x2, 0xd, 0xc, 0x3, 0x2, 0x2, 0x2, 0xe, 0xf, 0x3, 0x2, 0x2, 0x2, 
-       0xf, 0xd, 0x3, 0x2, 0x2, 0x2, 0xf, 0x10, 0x3, 0x2, 0x2, 0x2, 0x10, 
-       0x11, 0x3, 0x2, 0x2, 0x2, 0x11, 0x12, 0x7, 0x2, 0x2, 0x3, 0x12, 0x3, 
-       0x3, 0x2, 0x2, 0x2, 0x13, 0x14, 0x5, 0x8, 0x5, 0x2, 0x14, 0x15, 0x7, 
-       0x11, 0x2, 0x2, 0x15, 0x1d, 0x3, 0x2, 0x2, 0x2, 0x16, 0x17, 0x7, 
-       0xf, 0x2, 0x2, 0x17, 0x18, 0x7, 0xa, 0x2, 0x2, 0x18, 0x19, 0x5, 0x8, 
-       0x5, 0x2, 0x19, 0x1a, 0x7, 0x11, 0x2, 0x2, 0x1a, 0x1d, 0x3, 0x2, 
-       0x2, 0x2, 0x1b, 0x1d, 0x7, 0x11, 0x2, 0x2, 0x1c, 0x13, 0x3, 0x2, 
-       0x2, 0x2, 0x1c, 0x16, 0x3, 0x2, 0x2, 0x2, 0x1c, 0x1b, 0x3, 0x2, 0x2, 
-       0x2, 0x1d, 0x5, 0x3, 0x2, 0x2, 0x2, 0x1e, 0x24, 0x5, 0x8, 0x5, 0x2, 
-       0x1f, 0x20, 0x7, 0x3, 0x2, 0x2, 0x20, 0x21, 0x5, 0x8, 0x5, 0x2, 0x21, 
-       0x22, 0x7, 0x4, 0x2, 0x2, 0x22, 0x24, 0x3, 0x2, 0x2, 0x2, 0x23, 0x1e, 
-       0x3, 0x2, 0x2, 0x2, 0x23, 0x1f, 0x3, 0x2, 0x2, 0x2, 0x24, 0x7, 0x3, 
-       0x2, 0x2, 0x2, 0x25, 0x26, 0x5, 0xa, 0x6, 0x2, 0x26, 0x9, 0x3, 0x2, 
-       0x2, 0x2, 0x27, 0x28, 0x8, 0x6, 0x1, 0x2, 0x28, 0x2f, 0x7, 0x10, 
-       0x2, 0x2, 0x29, 0x2f, 0x7, 0xf, 0x2, 0x2, 0x2a, 0x2b, 0x7, 0x5, 0x2, 
-       0x2, 0x2b, 0x2c, 0x5, 0xa, 0x6, 0x2, 0x2c, 0x2d, 0x7, 0x6, 0x2, 0x2, 
-       0x2d, 0x2f, 0x3, 0x2, 0x2, 0x2, 0x2e, 0x27, 0x3, 0x2, 0x2, 0x2, 0x2e, 
-       0x29, 0x3, 0x2, 0x2, 0x2, 0x2e, 0x2a, 0x3, 0x2, 0x2, 0x2, 0x2f, 0x38, 
-       0x3, 0x2, 0x2, 0x2, 0x30, 0x31, 0xc, 0x7, 0x2, 0x2, 0x31, 0x32, 0x9, 
-       0x2, 0x2, 0x2, 0x32, 0x37, 0x5, 0xa, 0x6, 0x8, 0x33, 0x34, 0xc, 0x6, 
-       0x2, 0x2, 0x34, 0x35, 0x9, 0x3, 0x2, 0x2, 0x35, 0x37, 0x5, 0xa, 0x6, 
-       0x7, 0x36, 0x30, 0x3, 0x2, 0x2, 0x2, 0x36, 0x33, 0x3, 0x2, 0x2, 0x2, 
-       0x37, 0x3a, 0x3, 0x2, 0x2, 0x2, 0x38, 0x36, 0x3, 0x2, 0x2, 0x2, 0x38, 
-       0x39, 0x3, 0x2, 0x2, 0x2, 0x39, 0xb, 0x3, 0x2, 0x2, 0x2, 0x3a, 0x38, 
-       0x3, 0x2, 0x2, 0x2, 0x8, 0xf, 0x1c, 0x23, 0x2e, 0x36, 0x38, 
+       0x3, 0x13, 0x4b, 0x4, 0x2, 0x9, 0x2, 0x4, 0x3, 0x9, 0x3, 0x4, 0x4, 
+       0x9, 0x4, 0x4, 0x5, 0x9, 0x5, 0x4, 0x6, 0x9, 0x6, 0x4, 0x7, 0x9, 
+       0x7, 0x4, 0x8, 0x9, 0x8, 0x3, 0x2, 0x6, 0x2, 0x12, 0xa, 0x2, 0xd, 
+       0x2, 0xe, 0x2, 0x13, 0x3, 0x2, 0x3, 0x2, 0x3, 0x3, 0x3, 0x3, 0x3, 
+       0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x4, 0x3, 0x4, 0x7, 0x4, 
+       0x20, 0xa, 0x4, 0xc, 0x4, 0xe, 0x4, 0x23, 0xb, 0x4, 0x3, 0x4, 0x3, 
+       0x4, 0x3, 0x5, 0x3, 0x5, 0x3, 0x5, 0x3, 0x5, 0x3, 0x5, 0x3, 0x5, 
+       0x3, 0x5, 0x3, 0x5, 0x5, 0x5, 0x2f, 0xa, 0x5, 0x3, 0x6, 0x3, 0x6, 
+       0x3, 0x7, 0x3, 0x7, 0x3, 0x7, 0x3, 0x7, 0x3, 0x8, 0x3, 0x8, 0x3, 
+       0x8, 0x3, 0x8, 0x3, 0x8, 0x3, 0x8, 0x3, 0x8, 0x5, 0x8, 0x3e, 0xa, 
+       0x8, 0x3, 0x8, 0x3, 0x8, 0x3, 0x8, 0x3, 0x8, 0x3, 0x8, 0x3, 0x8, 
+       0x7, 0x8, 0x46, 0xa, 0x8, 0xc, 0x8, 0xe, 0x8, 0x49, 0xb, 0x8, 0x3, 
+       0x8, 0x2, 0x3, 0xe, 0x9, 0x2, 0x4, 0x6, 0x8, 0xa, 0xc, 0xe, 0x2, 
+       0x4, 0x3, 0x2, 0xc, 0xd, 0x3, 0x2, 0xe, 0xf, 0x2, 0x4c, 0x2, 0x11, 
+       0x3, 0x2, 0x2, 0x2, 0x4, 0x17, 0x3, 0x2, 0x2, 0x2, 0x6, 0x1d, 0x3, 
+       0x2, 0x2, 0x2, 0x8, 0x2e, 0x3, 0x2, 0x2, 0x2, 0xa, 0x30, 0x3, 0x2, 
+       0x2, 0x2, 0xc, 0x32, 0x3, 0x2, 0x2, 0x2, 0xe, 0x3d, 0x3, 0x2, 0x2, 
+       0x2, 0x10, 0x12, 0x5, 0x4, 0x3, 0x2, 0x11, 0x10, 0x3, 0x2, 0x2, 0x2, 
+       0x12, 0x13, 0x3, 0x2, 0x2, 0x2, 0x13, 0x11, 0x3, 0x2, 0x2, 0x2, 0x13, 
+       0x14, 0x3, 0x2, 0x2, 0x2, 0x14, 0x15, 0x3, 0x2, 0x2, 0x2, 0x15, 0x16, 
+       0x7, 0x2, 0x2, 0x3, 0x16, 0x3, 0x3, 0x2, 0x2, 0x2, 0x17, 0x18, 0x7, 
+       0x7, 0x2, 0x2, 0x18, 0x19, 0x7, 0x10, 0x2, 0x2, 0x19, 0x1a, 0x7, 
+       0x3, 0x2, 0x2, 0x1a, 0x1b, 0x7, 0x4, 0x2, 0x2, 0x1b, 0x1c, 0x5, 0x6, 
+       0x4, 0x2, 0x1c, 0x5, 0x3, 0x2, 0x2, 0x2, 0x1d, 0x21, 0x7, 0x5, 0x2, 
+       0x2, 0x1e, 0x20, 0x5, 0x8, 0x5, 0x2, 0x1f, 0x1e, 0x3, 0x2, 0x2, 0x2, 
+       0x20, 0x23, 0x3, 0x2, 0x2, 0x2, 0x21, 0x1f, 0x3, 0x2, 0x2, 0x2, 0x21, 
+       0x22, 0x3, 0x2, 0x2, 0x2, 0x22, 0x24, 0x3, 0x2, 0x2, 0x2, 0x23, 0x21, 
+       0x3, 0x2, 0x2, 0x2, 0x24, 0x25, 0x7, 0x6, 0x2, 0x2, 0x25, 0x7, 0x3, 
+       0x2, 0x2, 0x2, 0x26, 0x27, 0x5, 0xa, 0x6, 0x2, 0x27, 0x28, 0x7, 0xa, 
+       0x2, 0x2, 0x28, 0x2f, 0x3, 0x2, 0x2, 0x2, 0x29, 0x2a, 0x5, 0xc, 0x7, 
+       0x2, 0x2a, 0x2b, 0x7, 0xa, 0x2, 0x2, 0x2b, 0x2f, 0x3, 0x2, 0x2, 0x2, 
+       0x2c, 0x2f, 0x7, 0xa, 0x2, 0x2, 0x2d, 0x2f, 0x7, 0x12, 0x2, 0x2, 
+       0x2e, 0x26, 0x3, 0x2, 0x2, 0x2, 0x2e, 0x29, 0x3, 0x2, 0x2, 0x2, 0x2e, 
+       0x2c, 0x3, 0x2, 0x2, 0x2, 0x2e, 0x2d, 0x3, 0x2, 0x2, 0x2, 0x2f, 0x9, 
+       0x3, 0x2, 0x2, 0x2, 0x30, 0x31, 0x5, 0xe, 0x8, 0x2, 0x31, 0xb, 0x3, 
+       0x2, 0x2, 0x2, 0x32, 0x33, 0x7, 0x10, 0x2, 0x2, 0x33, 0x34, 0x7, 
+       0xb, 0x2, 0x2, 0x34, 0x35, 0x5, 0xa, 0x6, 0x2, 0x35, 0xd, 0x3, 0x2, 
+       0x2, 0x2, 0x36, 0x37, 0x8, 0x8, 0x1, 0x2, 0x37, 0x3e, 0x7, 0x11, 
+       0x2, 0x2, 0x38, 0x3e, 0x7, 0x10, 0x2, 0x2, 0x39, 0x3a, 0x7, 0x3, 
+       0x2, 0x2, 0x3a, 0x3b, 0x5, 0xe, 0x8, 0x2, 0x3b, 0x3c, 0x7, 0x4, 0x2, 
+       0x2, 0x3c, 0x3e, 0x3, 0x2, 0x2, 0x2, 0x3d, 0x36, 0x3, 0x2, 0x2, 0x2, 
+       0x3d, 0x38, 0x3, 0x2, 0x2, 0x2, 0x3d, 0x39, 0x3, 0x2, 0x2, 0x2, 0x3e, 
+       0x47, 0x3, 0x2, 0x2, 0x2, 0x3f, 0x40, 0xc, 0x7, 0x2, 0x2, 0x40, 0x41, 
+       0x9, 0x2, 0x2, 0x2, 0x41, 0x46, 0x5, 0xe, 0x8, 0x8, 0x42, 0x43, 0xc, 
+       0x6, 0x2, 0x2, 0x43, 0x44, 0x9, 0x3, 0x2, 0x2, 0x44, 0x46, 0x5, 0xe, 
+       0x8, 0x7, 0x45, 0x3f, 0x3, 0x2, 0x2, 0x2, 0x45, 0x42, 0x3, 0x2, 0x2, 
+       0x2, 0x46, 0x49, 0x3, 0x2, 0x2, 0x2, 0x47, 0x45, 0x3, 0x2, 0x2, 0x2, 
+       0x47, 0x48, 0x3, 0x2, 0x2, 0x2, 0x48, 0xf, 0x3, 0x2, 0x2, 0x2, 0x49, 
+       0x47, 0x3, 0x2, 0x2, 0x2, 0x8, 0x13, 0x21, 0x2e, 0x3d, 0x45, 0x47, 
   };
 
   _serializedATN.insert(_serializedATN.end(), serializedATNSegment0,

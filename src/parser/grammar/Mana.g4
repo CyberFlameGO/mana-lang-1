@@ -1,21 +1,24 @@
 grammar Mana;
 
-prog: stmt+ EOF;    
+prog: function+ EOF;
 
-//eol: (';'|NEWLINE) ;
+function: KEY_FN ID '(' ')' scope # FunctionDefinition
+        ;
 
-stmt: expr NEWLINE           # PrintExpr
-    | ID '=' expr NEWLINE    # Assign
-    | NEWLINE                # Blank
-    ;
-
-scope: expr          # GlobalScope
-//     | scope         # LocalScope
-     | '{' expr '}'  # LocalScope
+scope: '{' stmt* '}'  # LocalScope
      ;
+
+stmt: expr END         # PrintExpr
+    | assign END       # DefaultAssignment
+    | END              # EmptyStatement
+    | NEWLINE          # EmptyLine
+    ;
 
 expr: arithm
     ;
+
+assign: ID '=' expr  
+      ;
 
 arithm: left=arithm op=(MUL|DIV) right=arithm # MulDiv
       | left=arithm op=(ADD|SUB) right=arithm # AddSub
@@ -28,6 +31,8 @@ KEY_FN  : 'fn'           ;
 KEY_LET : 'let'          ;
 
 TYPE_I32: 'i32'          ;
+
+END     : ';'            ;
 
 ASSIGN  : '='            ;
 MUL     : '*'            ;

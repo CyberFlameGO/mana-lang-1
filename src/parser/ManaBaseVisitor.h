@@ -19,19 +19,7 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitPrintExpr(ManaParser::PrintExprContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual antlrcpp::Any visitAssign(ManaParser::AssignContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual antlrcpp::Any visitBlank(ManaParser::BlankContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual antlrcpp::Any visitGlobalScope(ManaParser::GlobalScopeContext *ctx) override {
+  virtual antlrcpp::Any visitFunctionDefinition(ManaParser::FunctionDefinitionContext *ctx) override {
     return visitChildren(ctx);
   }
 
@@ -39,7 +27,27 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual antlrcpp::Any visitPrintExpr(ManaParser::PrintExprContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitDefaultAssignment(ManaParser::DefaultAssignmentContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitEmptyStatement(ManaParser::EmptyStatementContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitEmptyLine(ManaParser::EmptyLineContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual antlrcpp::Any visitExpr(ManaParser::ExprContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitAssign(ManaParser::AssignContext *ctx) override {
     return visitChildren(ctx);
   }
 

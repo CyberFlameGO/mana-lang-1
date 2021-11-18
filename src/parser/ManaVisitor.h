@@ -21,17 +21,21 @@ public:
    */
     virtual antlrcpp::Any visitProg(ManaParser::ProgContext *context) = 0;
 
-    virtual antlrcpp::Any visitPrintExpr(ManaParser::PrintExprContext *context) = 0;
-
-    virtual antlrcpp::Any visitAssign(ManaParser::AssignContext *context) = 0;
-
-    virtual antlrcpp::Any visitBlank(ManaParser::BlankContext *context) = 0;
-
-    virtual antlrcpp::Any visitGlobalScope(ManaParser::GlobalScopeContext *context) = 0;
+    virtual antlrcpp::Any visitFunctionDefinition(ManaParser::FunctionDefinitionContext *context) = 0;
 
     virtual antlrcpp::Any visitLocalScope(ManaParser::LocalScopeContext *context) = 0;
 
+    virtual antlrcpp::Any visitPrintExpr(ManaParser::PrintExprContext *context) = 0;
+
+    virtual antlrcpp::Any visitDefaultAssignment(ManaParser::DefaultAssignmentContext *context) = 0;
+
+    virtual antlrcpp::Any visitEmptyStatement(ManaParser::EmptyStatementContext *context) = 0;
+
+    virtual antlrcpp::Any visitEmptyLine(ManaParser::EmptyLineContext *context) = 0;
+
     virtual antlrcpp::Any visitExpr(ManaParser::ExprContext *context) = 0;
+
+    virtual antlrcpp::Any visitAssign(ManaParser::AssignContext *context) = 0;
 
     virtual antlrcpp::Any visitIdentifier(ManaParser::IdentifierContext *context) = 0;
 
