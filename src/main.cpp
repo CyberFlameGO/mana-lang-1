@@ -11,7 +11,7 @@
 
 #include <vector>
 
-const std::string PATH("../parse_input/main.mana");
+const std::string PATH("../test/main.mana");
 
 class ast_visitor : public ManaBaseVisitor {
 public:
