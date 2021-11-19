@@ -1,46 +1,37 @@
 grammar Mana;
 
-prog: function+ EOF;
+file : statement+ EOF;
 
-function: KEY_FN ID '(' ')' scope # FunctionDefinition
-        ;
+statement : scope | function | expression | END | NEWLINE;
 
-scope: '{' stmt* '}'  # LocalScope
-     ;
+function : KEY_FN ID '(' ')' scope+;
 
-stmt: expr END         # PrintExpr
-    | assign END       # DefaultAssignment
-    | END              # EmptyStatement
-    | NEWLINE          # EmptyLine
-    ;
+expression : arithmetic;
 
-expr: arithm
-    ;
+scope : '{' statement* '}';
 
-assign: ID '=' expr  
-      ;
+arithmetic:
+	left = arithmetic op = (MUL | DIV) right = arithmetic	# MulDiv
+	| left = arithmetic op = (ADD | SUB) right = arithmetic	# AddSub
+	| INT													# Int
+	| ID													# Identifier
+	| '(' arithmetic ')'									# ParensExpr
+;
 
-arithm: left=arithm op=(MUL|DIV) right=arithm # MulDiv
-      | left=arithm op=(ADD|SUB) right=arithm # AddSub
-      | INT             # Int
-      | ID              # Identifier
-      | '(' arithm ')'  # ParensExpr
-      ;
+KEY_FN	: 'fn';
+KEY_LET	: 'let';
 
-KEY_FN  : 'fn'           ;
-KEY_LET : 'let'          ;
+TYPE_I32 : 'i32';
 
-TYPE_I32: 'i32'          ;
+END : ';';
 
-END     : ';'            ;
+ASSIGN	: '=';
+MUL		: '*';
+DIV		: '/';
+ADD		: '+';
+SUB		: '-';
 
-ASSIGN  : '='            ;
-MUL     : '*'            ;
-DIV     : '/'            ;
-ADD     : '+'            ;
-SUB     : '-'            ;
-
-ID      : [a-zA-Z]+      ;
-INT     : [0-9]+         ;
-NEWLINE : '\r'? '\n'     ;
-WS      : [ \t]+ -> skip ;
+ID		: [a-zA-Z]+;
+INT		: [0-9]+;
+NEWLINE	: '\r'? '\n';
+WS		: [ \t]+ -> skip;
