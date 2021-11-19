@@ -13,13 +13,13 @@ class  ManaParser : public antlr4::Parser {
 public:
   enum {
     T__0 = 1, T__1 = 2, T__2 = 3, T__3 = 4, KEY_FN = 5, KEY_LET = 6, TYPE_I32 = 7, 
-    END = 8, ASSIGN = 9, MUL = 10, DIV = 11, ADD = 12, SUB = 13, ID = 14, 
-    INT = 15, NEWLINE = 16, WS = 17
+    CONST_TRUE = 8, CONST_FALSE = 9, END = 10, ASSIGN = 11, MUL = 12, DIV = 13, 
+    ADD = 14, SUB = 15, ID = 16, INT = 17, NEWLINE = 18, WS = 19
   };
 
   enum {
     RuleSrc = 0, RuleStatement = 1, RuleFunction = 2, RuleExpression = 3, 
-    RuleScope = 4, RuleArithmetic = 5
+    RuleDeclaration = 4, RuleScope = 5, RuleArithmetic = 6
   };
 
   explicit ManaParser(antlr4::TokenStream *input);
@@ -36,6 +36,7 @@ public:
   class StatementContext;
   class FunctionContext;
   class ExpressionContext;
+  class DeclarationContext;
   class ScopeContext;
   class ArithmeticContext; 
 
@@ -99,6 +100,22 @@ public:
   };
 
   ExpressionContext* expression();
+
+  class  DeclarationContext : public antlr4::ParserRuleContext {
+  public:
+    DeclarationContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *KEY_LET();
+    antlr4::tree::TerminalNode *ID();
+    antlr4::tree::TerminalNode *ASSIGN();
+    ExpressionContext *expression();
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+   
+  };
+
+  DeclarationContext* declaration();
 
   class  ScopeContext : public antlr4::ParserRuleContext {
   public:

@@ -26,6 +26,9 @@ public:
   virtual void enterExpression(ManaParser::ExpressionContext *ctx) = 0;
   virtual void exitExpression(ManaParser::ExpressionContext *ctx) = 0;
 
+  virtual void enterDeclaration(ManaParser::DeclarationContext *ctx) = 0;
+  virtual void exitDeclaration(ManaParser::DeclarationContext *ctx) = 0;
+
   virtual void enterScope(ManaParser::ScopeContext *ctx) = 0;
   virtual void exitScope(ManaParser::ScopeContext *ctx) = 0;
 

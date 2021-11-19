@@ -28,6 +28,9 @@ public:
   virtual void enterExpression(ManaParser::ExpressionContext * /*ctx*/) override { }
   virtual void exitExpression(ManaParser::ExpressionContext * /*ctx*/) override { }
 
+  virtual void enterDeclaration(ManaParser::DeclarationContext * /*ctx*/) override { }
+  virtual void exitDeclaration(ManaParser::DeclarationContext * /*ctx*/) override { }
+
   virtual void enterScope(ManaParser::ScopeContext * /*ctx*/) override { }
   virtual void exitScope(ManaParser::ScopeContext * /*ctx*/) override { }
 

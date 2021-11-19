@@ -13,8 +13,8 @@ class  ManaLexer : public antlr4::Lexer {
 public:
   enum {
     T__0 = 1, T__1 = 2, T__2 = 3, T__3 = 4, KEY_FN = 5, KEY_LET = 6, TYPE_I32 = 7, 
-    END = 8, ASSIGN = 9, MUL = 10, DIV = 11, ADD = 12, SUB = 13, ID = 14, 
-    INT = 15, NEWLINE = 16, WS = 17
+    CONST_TRUE = 8, CONST_FALSE = 9, END = 10, ASSIGN = 11, MUL = 12, DIV = 13, 
+    ADD = 14, SUB = 15, ID = 16, INT = 17, NEWLINE = 18, WS = 19
   };
 
   explicit ManaLexer(antlr4::CharStream *input);
