@@ -1,53 +1,24 @@
-/* lexer header section */
 
-// Generated from ManaLexer.g4 by ANTLR 4.9.2
+// Generated from /home/nyx/dev/mana/mana-lang/src/grammar/Mana.g4 by ANTLR 4.9.3
 
 #pragma once
 
-/* lexer precinclude section */
 
 #include "antlr4-runtime.h"
 
 
-/* lexer postinclude section */
-#ifndef _WIN32
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-#endif
 
-
-namespace mana::parser {
-
-/* lexer context section */
 
 class  ManaLexer : public antlr4::Lexer {
 public:
   enum {
-    DUMMY = 1, Return = 2, Continue = 3, INT = 4, Digit = 5, ID = 6, LessThan = 7, 
-    GreaterThan = 8, Equal = 9, And = 10, Colon = 11, Semicolon = 12, Plus = 13, 
-    Minus = 14, Star = 15, OpenPar = 16, ClosePar = 17, OpenCurly = 18, 
-    CloseCurly = 19, QuestionMark = 20, Comma = 21, String = 22, Foo = 23, 
-    Bar = 24, Any = 25, Comment = 26, WS = 27, Dot = 28, DotDot = 29, Dollar = 30, 
-    Ampersand = 31
-  };
-
-  enum {
-    CommentsChannel = 2, DirectiveChannel = 3
-  };
-
-  enum {
-    Mode1 = 1, Mode2 = 2
+    T__0 = 1, T__1 = 2, T__2 = 3, T__3 = 4, KEY_FN = 5, KEY_LET = 6, TYPE_I32 = 7, 
+    END = 8, ASSIGN = 9, MUL = 10, DIV = 11, ADD = 12, SUB = 13, ID = 14, 
+    INT = 15, NEWLINE = 16, WS = 17
   };
 
   explicit ManaLexer(antlr4::CharStream *input);
   ~ManaLexer();
-
-  /* public lexer declarations section */
-  bool canTestFoo() { return true; }
-  bool isItFoo() { return true; }
-  bool isItBar() { return true; }
-
-  void myFooLexerAction() { /* do something*/ };
-  void myBarLexerAction() { /* do something*/ };
 
   virtual std::string getGrammarFileName() const override;
   virtual const std::vector<std::string>& getRuleNames() const override;
@@ -59,9 +30,6 @@ public:
 
   virtual const std::vector<uint16_t> getSerializedATN() const override;
   virtual const antlr4::atn::ATN& getATN() const override;
-
-  virtual void action(antlr4::RuleContext *context, size_t ruleIndex, size_t actionIndex) override;
-  virtual bool sempred(antlr4::RuleContext *_localctx, size_t ruleIndex, size_t predicateIndex) override;
 
 private:
   static std::vector<antlr4::dfa::DFA> _decisionToDFA;
@@ -77,15 +45,10 @@ private:
   static antlr4::atn::ATN _atn;
   static std::vector<uint16_t> _serializedATN;
 
-  /* private lexer declarations/members section */
 
   // Individual action functions triggered by action() above.
-  void FooAction(antlr4::RuleContext *context, size_t actionIndex);
-  void BarAction(antlr4::RuleContext *context, size_t actionIndex);
 
   // Individual semantic predicate functions triggered by sempred() above.
-  bool FooSempred(antlr4::RuleContext *_localctx, size_t predicateIndex);
-  bool BarSempred(antlr4::RuleContext *_localctx, size_t predicateIndex);
 
   struct Initializer {
     Initializer();
@@ -93,4 +56,3 @@ private:
   static Initializer _init;
 };
 
-}  // namespace mana::parser
