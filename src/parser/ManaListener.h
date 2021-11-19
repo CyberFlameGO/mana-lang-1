@@ -14,8 +14,8 @@
 class  ManaListener : public antlr4::tree::ParseTreeListener {
 public:
 
-  virtual void enterFile(ManaParser::FileContext *ctx) = 0;
-  virtual void exitFile(ManaParser::FileContext *ctx) = 0;
+  virtual void enterSrc(ManaParser::SrcContext *ctx) = 0;
+  virtual void exitSrc(ManaParser::SrcContext *ctx) = 0;
 
   virtual void enterStatement(ManaParser::StatementContext *ctx) = 0;
   virtual void exitStatement(ManaParser::StatementContext *ctx) = 0;

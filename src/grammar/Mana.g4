@@ -1,6 +1,6 @@
 grammar Mana;
 
-file : statement+ EOF;
+src : statement+ EOF;
 
 statement : scope | function | expression | END | NEWLINE;
 

@@ -18,7 +18,7 @@ public:
   };
 
   enum {
-    RuleFile = 0, RuleStatement = 1, RuleFunction = 2, RuleExpression = 3, 
+    RuleSrc = 0, RuleStatement = 1, RuleFunction = 2, RuleExpression = 3, 
     RuleScope = 4, RuleArithmetic = 5
   };
 
@@ -32,16 +32,16 @@ public:
   virtual antlr4::dfa::Vocabulary& getVocabulary() const override;
 
 
-  class FileContext;
+  class SrcContext;
   class StatementContext;
   class FunctionContext;
   class ExpressionContext;
   class ScopeContext;
   class ArithmeticContext; 
 
-  class  FileContext : public antlr4::ParserRuleContext {
+  class  SrcContext : public antlr4::ParserRuleContext {
   public:
-    FileContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    SrcContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *EOF();
     std::vector<StatementContext *> statement();
@@ -52,7 +52,7 @@ public:
    
   };
 
-  FileContext* file();
+  SrcContext* src();
 
   class  StatementContext : public antlr4::ParserRuleContext {
   public:

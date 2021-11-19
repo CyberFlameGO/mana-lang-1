@@ -31,44 +31,44 @@ dfa::Vocabulary& ManaParser::getVocabulary() const {
 }
 
 
-//----------------- FileContext ------------------------------------------------------------------
+//----------------- SrcContext ------------------------------------------------------------------
 
-ManaParser::FileContext::FileContext(ParserRuleContext *parent, size_t invokingState)
+ManaParser::SrcContext::SrcContext(ParserRuleContext *parent, size_t invokingState)
   : ParserRuleContext(parent, invokingState) {
 }
 
-tree::TerminalNode* ManaParser::FileContext::EOF() {
+tree::TerminalNode* ManaParser::SrcContext::EOF() {
   return getToken(ManaParser::EOF, 0);
 }
 
-std::vector<ManaParser::StatementContext *> ManaParser::FileContext::statement() {
+std::vector<ManaParser::StatementContext *> ManaParser::SrcContext::statement() {
   return getRuleContexts<ManaParser::StatementContext>();
 }
 
-ManaParser::StatementContext* ManaParser::FileContext::statement(size_t i) {
+ManaParser::StatementContext* ManaParser::SrcContext::statement(size_t i) {
   return getRuleContext<ManaParser::StatementContext>(i);
 }
 
 
-size_t ManaParser::FileContext::getRuleIndex() const {
-  return ManaParser::RuleFile;
+size_t ManaParser::SrcContext::getRuleIndex() const {
+  return ManaParser::RuleSrc;
 }
 
-void ManaParser::FileContext::enterRule(tree::ParseTreeListener *listener) {
+void ManaParser::SrcContext::enterRule(tree::ParseTreeListener *listener) {
   auto parserListener = dynamic_cast<ManaListener *>(listener);
   if (parserListener != nullptr)
-    parserListener->enterFile(this);
+    parserListener->enterSrc(this);
 }
 
-void ManaParser::FileContext::exitRule(tree::ParseTreeListener *listener) {
+void ManaParser::SrcContext::exitRule(tree::ParseTreeListener *listener) {
   auto parserListener = dynamic_cast<ManaListener *>(listener);
   if (parserListener != nullptr)
-    parserListener->exitFile(this);
+    parserListener->exitSrc(this);
 }
 
-ManaParser::FileContext* ManaParser::file() {
-  FileContext *_localctx = _tracker.createInstance<FileContext>(_ctx, getState());
-  enterRule(_localctx, 0, ManaParser::RuleFile);
+ManaParser::SrcContext* ManaParser::src() {
+  SrcContext *_localctx = _tracker.createInstance<SrcContext>(_ctx, getState());
+  enterRule(_localctx, 0, ManaParser::RuleSrc);
   size_t _la = 0;
 
 #if __cplusplus > 201703L
@@ -741,7 +741,7 @@ atn::ATN ManaParser::_atn;
 std::vector<uint16_t> ManaParser::_serializedATN;
 
 std::vector<std::string> ManaParser::_ruleNames = {
-  "file", "statement", "function", "expression", "scope", "arithmetic"
+  "src", "statement", "function", "expression", "scope", "arithmetic"
 };
 
 std::vector<std::string> ManaParser::_literalNames = {

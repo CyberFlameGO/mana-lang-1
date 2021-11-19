@@ -14,8 +14,8 @@ namespace ast
 
     public:
         listener(const ManaParser& a_parser);
-        virtual void enterFile(ManaParser::FileContext* ctx) override;
-        virtual void exitFile(ManaParser::FileContext* ctx) override;
+        virtual void enterSrc(ManaParser::SrcContext* ctx) override;
+        virtual void exitSrc(ManaParser::SrcContext* ctx) override;
 
         virtual void enterStatement(ManaParser::StatementContext* ctx) override;
         virtual void exitStatement(ManaParser::StatementContext* ctx) override;
