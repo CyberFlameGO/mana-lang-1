@@ -35,7 +35,7 @@ int main()
         antlr4::tree::ParseTree *tree = parser.file();
 
         const antlr4::tree::ParseTreeWalker walker;
-        ast_listener listener(parser);
+        ast::listener listener(parser);
 
         walker.walk(&listener, tree);
 

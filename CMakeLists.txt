@@ -21,7 +21,7 @@ llvm_map_components_to_libnames(llvm_libs
 add_definitions(-DANTLR4CPP_STATIC)
 
 # Uncomment if compiling with Visual C++
-# set(ANTLR4_WITH_STATIC_CRT ON)
+set(ANTLR4_WITH_STATIC_CRT ON)
 
 add_subdirectory(vendor/antlr4-cpp-runtime)
 
