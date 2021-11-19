@@ -4,13 +4,12 @@
 
 #include "parser/ManaParser.h"
 #include "parser/ManaLexer.h"
-#include "parser/ManaBaseListener.h"
 
 #include "antlr4-runtime.h"
 
 #include <fstream>
 #include <string>
-#include <utility>
+#include <filesystem>
 
 constexpr const char* DEFAULT_PATH = "../test/main.mana";
 
@@ -32,36 +31,36 @@ int main(int argc, char *argv[])
 }
 
 // We can later replace this bool with an actual error type
-bool parse_file(const std::string& path) 
+bool parse_file(const std::string& path_in) 
 {
-    // Determine file name -- we assume '/' since Windows pretty much fully supports it
-    const auto path_end       = path.size() - 1;
-    const auto file_delimiter = path.find_last_of('/');
-    const bool has_path       = file_delimiter != std::string::npos;
-    const std::string& filename = (has_path) ? path.substr(file_delimiter + 1, path_end) : path; // + 1 to omit the '/'
-
-    // Validate extension
-    if (path.ends_with(FILE_EXT_MANA)     == false 
-     && path.ends_with(FILE_EXT_MANA_ALT) == false) {
-        const std::string::size_type pos = path.find_last_of('.');
-        if (pos != std::string::npos) {
-            // We found the extension
-            spdlog::error("Invalid extension \"{}\"", path.substr(pos, path_end));
-        } else {
-            // No extension at all
-            spdlog::error("No extension for file \"{}\"", filename);
-        }
-
-        spdlog::warn("Note -- Mana source files can be either '.mana' or '.mn'\n");
-        return false;
-    }
-
-        // Check if file is available
-    std::ifstream source_file(path);
+    // Check if file is available
+    std::ifstream source_file(path_in);
     if (source_file.is_open() == false) {
-        spdlog::error("Could not open file at: '{}' -- skipping\n", path);
+        spdlog::error("Could not open file: \"{}\" -- skipping\n", path_in);
         return false;
     }
+
+    // We'll need an fs object esp for handling modules later
+    const std::filesystem::path path(path_in);
+    if (!path.has_filename()) {
+        spdlog::error("No file name specified for \"{}\" -- skipping\n", path_in);
+        return false;
+    } 
+    
+    const auto& filename = path.filename().string();
+    if (!path.has_extension()) {
+        spdlog::error("No extension for file \"{}\" -- skipping\n", filename);
+        return false;
+    }
+    
+    const auto& extension = path.extension().string();
+    if (extension != FILE_EXT_MANA
+        && extension != FILE_EXT_MANA_MN) {
+            spdlog::error("Invalid extension \"{}\" -- skipping", extension);
+            spdlog::info("NOTE: Mana source files can be either \".mana\" or \".mn\"\n");
+
+            return false;
+        }
 
     // File is valid, so begin parsing
     spdlog::info("--- Parsing file: {} ---", filename);
@@ -80,32 +79,3 @@ bool parse_file(const std::string& path)
 
     return true;
 }
-
-// old
-// const std::string get_extension(const std::string& path) 
-// {
-//     // we need the iterator outside the loop
-//     const auto path_size = path.size();
-//     int i = path_size - 1;
-
-//     // first we search for a period
-//     for ( ; i > 0; --i) {
-//         if (path.at(i) == '.') {
-//             break;
-//         }
-//     }
-
-//     // we just exit if we found no period
-//     if (i == 0) {
-//         return path;
-//     }
-
-//     // otherwise we fill the buffer with the remaining string
-//     std::stringstream buffer;
-//     for ( ; i < path_size; ++i) {
-//         buffer << path.at(i);
-//     }
-
-
-//     return buffer.str();
-// }
