@@ -80,24 +80,26 @@ ManaParser::SrcContext* ManaParser::src() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(15); 
+    setState(17); 
     _errHandler->sync(this);
     _la = _input->LA(1);
     do {
-      setState(14);
+      setState(16);
       statement();
-      setState(17); 
+      setState(19); 
       _errHandler->sync(this);
       _la = _input->LA(1);
     } while ((((_la & ~ 0x3fULL) == 0) &&
       ((1ULL << _la) & ((1ULL << ManaParser::T__0)
       | (1ULL << ManaParser::T__2)
       | (1ULL << ManaParser::KEY_FN)
+      | (1ULL << ManaParser::KEY_LET)
       | (1ULL << ManaParser::END)
       | (1ULL << ManaParser::ID)
       | (1ULL << ManaParser::INT)
+      | (1ULL << ManaParser::FLOAT)
       | (1ULL << ManaParser::NEWLINE))) != 0));
-    setState(19);
+    setState(21);
     match(ManaParser::EOF);
    
   }
@@ -124,8 +126,16 @@ ManaParser::FunctionContext* ManaParser::StatementContext::function() {
   return getRuleContext<ManaParser::FunctionContext>(0);
 }
 
+ManaParser::DeclarationContext* ManaParser::StatementContext::declaration() {
+  return getRuleContext<ManaParser::DeclarationContext>(0);
+}
+
 ManaParser::ExpressionContext* ManaParser::StatementContext::expression() {
   return getRuleContext<ManaParser::ExpressionContext>(0);
+}
+
+ManaParser::AtomContext* ManaParser::StatementContext::atom() {
+  return getRuleContext<ManaParser::AtomContext>(0);
 }
 
 tree::TerminalNode* ManaParser::StatementContext::END() {
@@ -165,49 +175,140 @@ ManaParser::StatementContext* ManaParser::statement() {
     exitRule();
   });
   try {
-    setState(26);
+    setState(30);
     _errHandler->sync(this);
-    switch (_input->LA(1)) {
-      case ManaParser::T__2: {
-        enterOuterAlt(_localctx, 1);
-        setState(21);
-        scope();
-        break;
-      }
+    switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 1, _ctx)) {
+    case 1: {
+      enterOuterAlt(_localctx, 1);
+      setState(23);
+      scope();
+      break;
+    }
 
-      case ManaParser::KEY_FN: {
-        enterOuterAlt(_localctx, 2);
-        setState(22);
-        function();
-        break;
-      }
+    case 2: {
+      enterOuterAlt(_localctx, 2);
+      setState(24);
+      function();
+      break;
+    }
 
-      case ManaParser::T__0:
-      case ManaParser::ID:
-      case ManaParser::INT: {
-        enterOuterAlt(_localctx, 3);
-        setState(23);
-        expression();
-        break;
-      }
+    case 3: {
+      enterOuterAlt(_localctx, 3);
+      setState(25);
+      declaration();
+      break;
+    }
 
-      case ManaParser::END: {
-        enterOuterAlt(_localctx, 4);
-        setState(24);
-        match(ManaParser::END);
-        break;
-      }
+    case 4: {
+      enterOuterAlt(_localctx, 4);
+      setState(26);
+      expression();
+      break;
+    }
 
-      case ManaParser::NEWLINE: {
-        enterOuterAlt(_localctx, 5);
-        setState(25);
-        match(ManaParser::NEWLINE);
-        break;
-      }
+    case 5: {
+      enterOuterAlt(_localctx, 5);
+      setState(27);
+      atom();
+      break;
+    }
+
+    case 6: {
+      enterOuterAlt(_localctx, 6);
+      setState(28);
+      match(ManaParser::END);
+      break;
+    }
+
+    case 7: {
+      enterOuterAlt(_localctx, 7);
+      setState(29);
+      match(ManaParser::NEWLINE);
+      break;
+    }
 
     default:
-      throw NoViableAltException(this);
+      break;
     }
+   
+  }
+  catch (RecognitionException &e) {
+    _errHandler->reportError(this, e);
+    _localctx->exception = std::current_exception();
+    _errHandler->recover(this, _localctx->exception);
+  }
+
+  return _localctx;
+}
+
+//----------------- ScopeContext ------------------------------------------------------------------
+
+ManaParser::ScopeContext::ScopeContext(ParserRuleContext *parent, size_t invokingState)
+  : ParserRuleContext(parent, invokingState) {
+}
+
+std::vector<ManaParser::StatementContext *> ManaParser::ScopeContext::statement() {
+  return getRuleContexts<ManaParser::StatementContext>();
+}
+
+ManaParser::StatementContext* ManaParser::ScopeContext::statement(size_t i) {
+  return getRuleContext<ManaParser::StatementContext>(i);
+}
+
+
+size_t ManaParser::ScopeContext::getRuleIndex() const {
+  return ManaParser::RuleScope;
+}
+
+void ManaParser::ScopeContext::enterRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<ManaListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->enterScope(this);
+}
+
+void ManaParser::ScopeContext::exitRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<ManaListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->exitScope(this);
+}
+
+ManaParser::ScopeContext* ManaParser::scope() {
+  ScopeContext *_localctx = _tracker.createInstance<ScopeContext>(_ctx, getState());
+  enterRule(_localctx, 4, ManaParser::RuleScope);
+  size_t _la = 0;
+
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
+  auto onExit = finally([=] {
+#endif
+    exitRule();
+  });
+  try {
+    enterOuterAlt(_localctx, 1);
+    setState(32);
+    match(ManaParser::T__0);
+    setState(36);
+    _errHandler->sync(this);
+    _la = _input->LA(1);
+    while ((((_la & ~ 0x3fULL) == 0) &&
+      ((1ULL << _la) & ((1ULL << ManaParser::T__0)
+      | (1ULL << ManaParser::T__2)
+      | (1ULL << ManaParser::KEY_FN)
+      | (1ULL << ManaParser::KEY_LET)
+      | (1ULL << ManaParser::END)
+      | (1ULL << ManaParser::ID)
+      | (1ULL << ManaParser::INT)
+      | (1ULL << ManaParser::FLOAT)
+      | (1ULL << ManaParser::NEWLINE))) != 0)) {
+      setState(33);
+      statement();
+      setState(38);
+      _errHandler->sync(this);
+      _la = _input->LA(1);
+    }
+    setState(39);
+    match(ManaParser::T__1);
    
   }
   catch (RecognitionException &e) {
@@ -260,7 +361,7 @@ void ManaParser::FunctionContext::exitRule(tree::ParseTreeListener *listener) {
 
 ManaParser::FunctionContext* ManaParser::function() {
   FunctionContext *_localctx = _tracker.createInstance<FunctionContext>(_ctx, getState());
-  enterRule(_localctx, 4, ManaParser::RuleFunction);
+  enterRule(_localctx, 6, ManaParser::RuleFunction);
 
 #if __cplusplus > 201703L
   auto onExit = finally([=, this] {
@@ -272,21 +373,21 @@ ManaParser::FunctionContext* ManaParser::function() {
   try {
     size_t alt;
     enterOuterAlt(_localctx, 1);
-    setState(28);
+    setState(41);
     match(ManaParser::KEY_FN);
-    setState(29);
+    setState(42);
     match(ManaParser::ID);
-    setState(30);
-    match(ManaParser::T__0);
-    setState(31);
-    match(ManaParser::T__1);
-    setState(33); 
+    setState(43);
+    match(ManaParser::T__2);
+    setState(44);
+    match(ManaParser::T__3);
+    setState(46); 
     _errHandler->sync(this);
     alt = 1;
     do {
       switch (alt) {
         case 1: {
-              setState(32);
+              setState(45);
               scope();
               break;
             }
@@ -294,10 +395,81 @@ ManaParser::FunctionContext* ManaParser::function() {
       default:
         throw NoViableAltException(this);
       }
-      setState(35); 
+      setState(48); 
       _errHandler->sync(this);
-      alt = getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 2, _ctx);
+      alt = getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 3, _ctx);
     } while (alt != 2 && alt != atn::ATN::INVALID_ALT_NUMBER);
+   
+  }
+  catch (RecognitionException &e) {
+    _errHandler->reportError(this, e);
+    _localctx->exception = std::current_exception();
+    _errHandler->recover(this, _localctx->exception);
+  }
+
+  return _localctx;
+}
+
+//----------------- DeclarationContext ------------------------------------------------------------------
+
+ManaParser::DeclarationContext::DeclarationContext(ParserRuleContext *parent, size_t invokingState)
+  : ParserRuleContext(parent, invokingState) {
+}
+
+tree::TerminalNode* ManaParser::DeclarationContext::KEY_LET() {
+  return getToken(ManaParser::KEY_LET, 0);
+}
+
+tree::TerminalNode* ManaParser::DeclarationContext::ASSIGN() {
+  return getToken(ManaParser::ASSIGN, 0);
+}
+
+tree::TerminalNode* ManaParser::DeclarationContext::ID() {
+  return getToken(ManaParser::ID, 0);
+}
+
+ManaParser::ExpressionContext* ManaParser::DeclarationContext::expression() {
+  return getRuleContext<ManaParser::ExpressionContext>(0);
+}
+
+
+size_t ManaParser::DeclarationContext::getRuleIndex() const {
+  return ManaParser::RuleDeclaration;
+}
+
+void ManaParser::DeclarationContext::enterRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<ManaListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->enterDeclaration(this);
+}
+
+void ManaParser::DeclarationContext::exitRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<ManaListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->exitDeclaration(this);
+}
+
+ManaParser::DeclarationContext* ManaParser::declaration() {
+  DeclarationContext *_localctx = _tracker.createInstance<DeclarationContext>(_ctx, getState());
+  enterRule(_localctx, 8, ManaParser::RuleDeclaration);
+
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
+  auto onExit = finally([=] {
+#endif
+    exitRule();
+  });
+  try {
+    enterOuterAlt(_localctx, 1);
+    setState(50);
+    match(ManaParser::KEY_LET);
+    setState(51);
+    antlrcpp::downCast<DeclarationContext *>(_localctx)->iden = match(ManaParser::ID);
+    setState(52);
+    match(ManaParser::ASSIGN);
+    setState(53);
+    antlrcpp::downCast<DeclarationContext *>(_localctx)->expr = expression();
    
   }
   catch (RecognitionException &e) {
@@ -338,7 +510,7 @@ void ManaParser::ExpressionContext::exitRule(tree::ParseTreeListener *listener) 
 
 ManaParser::ExpressionContext* ManaParser::expression() {
   ExpressionContext *_localctx = _tracker.createInstance<ExpressionContext>(_ctx, getState());
-  enterRule(_localctx, 6, ManaParser::RuleExpression);
+  enterRule(_localctx, 10, ManaParser::RuleExpression);
 
 #if __cplusplus > 201703L
   auto onExit = finally([=, this] {
@@ -349,7 +521,7 @@ ManaParser::ExpressionContext* ManaParser::expression() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(37);
+    setState(55);
     arithmetic(0);
    
   }
@@ -362,111 +534,44 @@ ManaParser::ExpressionContext* ManaParser::expression() {
   return _localctx;
 }
 
-//----------------- DeclarationContext ------------------------------------------------------------------
+//----------------- AtomContext ------------------------------------------------------------------
 
-ManaParser::DeclarationContext::DeclarationContext(ParserRuleContext *parent, size_t invokingState)
+ManaParser::AtomContext::AtomContext(ParserRuleContext *parent, size_t invokingState)
   : ParserRuleContext(parent, invokingState) {
 }
 
-tree::TerminalNode* ManaParser::DeclarationContext::KEY_LET() {
-  return getToken(ManaParser::KEY_LET, 0);
+tree::TerminalNode* ManaParser::AtomContext::INT() {
+  return getToken(ManaParser::INT, 0);
 }
 
-tree::TerminalNode* ManaParser::DeclarationContext::ID() {
+tree::TerminalNode* ManaParser::AtomContext::FLOAT() {
+  return getToken(ManaParser::FLOAT, 0);
+}
+
+tree::TerminalNode* ManaParser::AtomContext::ID() {
   return getToken(ManaParser::ID, 0);
 }
 
-tree::TerminalNode* ManaParser::DeclarationContext::ASSIGN() {
-  return getToken(ManaParser::ASSIGN, 0);
+
+size_t ManaParser::AtomContext::getRuleIndex() const {
+  return ManaParser::RuleAtom;
 }
 
-ManaParser::ExpressionContext* ManaParser::DeclarationContext::expression() {
-  return getRuleContext<ManaParser::ExpressionContext>(0);
-}
-
-
-size_t ManaParser::DeclarationContext::getRuleIndex() const {
-  return ManaParser::RuleDeclaration;
-}
-
-void ManaParser::DeclarationContext::enterRule(tree::ParseTreeListener *listener) {
+void ManaParser::AtomContext::enterRule(tree::ParseTreeListener *listener) {
   auto parserListener = dynamic_cast<ManaListener *>(listener);
   if (parserListener != nullptr)
-    parserListener->enterDeclaration(this);
+    parserListener->enterAtom(this);
 }
 
-void ManaParser::DeclarationContext::exitRule(tree::ParseTreeListener *listener) {
+void ManaParser::AtomContext::exitRule(tree::ParseTreeListener *listener) {
   auto parserListener = dynamic_cast<ManaListener *>(listener);
   if (parserListener != nullptr)
-    parserListener->exitDeclaration(this);
+    parserListener->exitAtom(this);
 }
 
-ManaParser::DeclarationContext* ManaParser::declaration() {
-  DeclarationContext *_localctx = _tracker.createInstance<DeclarationContext>(_ctx, getState());
-  enterRule(_localctx, 8, ManaParser::RuleDeclaration);
-
-#if __cplusplus > 201703L
-  auto onExit = finally([=, this] {
-#else
-  auto onExit = finally([=] {
-#endif
-    exitRule();
-  });
-  try {
-    enterOuterAlt(_localctx, 1);
-    setState(39);
-    match(ManaParser::KEY_LET);
-    setState(40);
-    match(ManaParser::ID);
-    setState(41);
-    match(ManaParser::ASSIGN);
-    setState(42);
-    expression();
-   
-  }
-  catch (RecognitionException &e) {
-    _errHandler->reportError(this, e);
-    _localctx->exception = std::current_exception();
-    _errHandler->recover(this, _localctx->exception);
-  }
-
-  return _localctx;
-}
-
-//----------------- ScopeContext ------------------------------------------------------------------
-
-ManaParser::ScopeContext::ScopeContext(ParserRuleContext *parent, size_t invokingState)
-  : ParserRuleContext(parent, invokingState) {
-}
-
-std::vector<ManaParser::StatementContext *> ManaParser::ScopeContext::statement() {
-  return getRuleContexts<ManaParser::StatementContext>();
-}
-
-ManaParser::StatementContext* ManaParser::ScopeContext::statement(size_t i) {
-  return getRuleContext<ManaParser::StatementContext>(i);
-}
-
-
-size_t ManaParser::ScopeContext::getRuleIndex() const {
-  return ManaParser::RuleScope;
-}
-
-void ManaParser::ScopeContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<ManaListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterScope(this);
-}
-
-void ManaParser::ScopeContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<ManaListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitScope(this);
-}
-
-ManaParser::ScopeContext* ManaParser::scope() {
-  ScopeContext *_localctx = _tracker.createInstance<ScopeContext>(_ctx, getState());
-  enterRule(_localctx, 10, ManaParser::RuleScope);
+ManaParser::AtomContext* ManaParser::atom() {
+  AtomContext *_localctx = _tracker.createInstance<AtomContext>(_ctx, getState());
+  enterRule(_localctx, 12, ManaParser::RuleAtom);
   size_t _la = 0;
 
 #if __cplusplus > 201703L
@@ -477,28 +582,36 @@ ManaParser::ScopeContext* ManaParser::scope() {
     exitRule();
   });
   try {
-    enterOuterAlt(_localctx, 1);
-    setState(44);
-    match(ManaParser::T__2);
-    setState(48);
+    setState(59);
     _errHandler->sync(this);
-    _la = _input->LA(1);
-    while ((((_la & ~ 0x3fULL) == 0) &&
-      ((1ULL << _la) & ((1ULL << ManaParser::T__0)
-      | (1ULL << ManaParser::T__2)
-      | (1ULL << ManaParser::KEY_FN)
-      | (1ULL << ManaParser::END)
-      | (1ULL << ManaParser::ID)
-      | (1ULL << ManaParser::INT)
-      | (1ULL << ManaParser::NEWLINE))) != 0)) {
-      setState(45);
-      statement();
-      setState(50);
-      _errHandler->sync(this);
-      _la = _input->LA(1);
+    switch (_input->LA(1)) {
+      case ManaParser::INT:
+      case ManaParser::FLOAT: {
+        enterOuterAlt(_localctx, 1);
+        setState(57);
+        _la = _input->LA(1);
+        if (!(_la == ManaParser::INT
+
+        || _la == ManaParser::FLOAT)) {
+        _errHandler->recoverInline(this);
+        }
+        else {
+          _errHandler->reportMatch(this);
+          consume();
+        }
+        break;
+      }
+
+      case ManaParser::ID: {
+        enterOuterAlt(_localctx, 2);
+        setState(58);
+        match(ManaParser::ID);
+        break;
+      }
+
+    default:
+      throw NoViableAltException(this);
     }
-    setState(51);
-    match(ManaParser::T__3);
    
   }
   catch (RecognitionException &e) {
@@ -525,23 +638,23 @@ void ManaParser::ArithmeticContext::copyFrom(ArithmeticContext *ctx) {
   ParserRuleContext::copyFrom(ctx);
 }
 
-//----------------- IdentifierContext ------------------------------------------------------------------
+//----------------- SingleValueContext ------------------------------------------------------------------
 
-tree::TerminalNode* ManaParser::IdentifierContext::ID() {
-  return getToken(ManaParser::ID, 0);
+ManaParser::AtomContext* ManaParser::SingleValueContext::atom() {
+  return getRuleContext<ManaParser::AtomContext>(0);
 }
 
-ManaParser::IdentifierContext::IdentifierContext(ArithmeticContext *ctx) { copyFrom(ctx); }
+ManaParser::SingleValueContext::SingleValueContext(ArithmeticContext *ctx) { copyFrom(ctx); }
 
-void ManaParser::IdentifierContext::enterRule(tree::ParseTreeListener *listener) {
+void ManaParser::SingleValueContext::enterRule(tree::ParseTreeListener *listener) {
   auto parserListener = dynamic_cast<ManaListener *>(listener);
   if (parserListener != nullptr)
-    parserListener->enterIdentifier(this);
+    parserListener->enterSingleValue(this);
 }
-void ManaParser::IdentifierContext::exitRule(tree::ParseTreeListener *listener) {
+void ManaParser::SingleValueContext::exitRule(tree::ParseTreeListener *listener) {
   auto parserListener = dynamic_cast<ManaListener *>(listener);
   if (parserListener != nullptr)
-    parserListener->exitIdentifier(this);
+    parserListener->exitSingleValue(this);
 }
 //----------------- MulDivContext ------------------------------------------------------------------
 
@@ -621,24 +734,6 @@ void ManaParser::ParensExprContext::exitRule(tree::ParseTreeListener *listener) 
   if (parserListener != nullptr)
     parserListener->exitParensExpr(this);
 }
-//----------------- IntContext ------------------------------------------------------------------
-
-tree::TerminalNode* ManaParser::IntContext::INT() {
-  return getToken(ManaParser::INT, 0);
-}
-
-ManaParser::IntContext::IntContext(ArithmeticContext *ctx) { copyFrom(ctx); }
-
-void ManaParser::IntContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<ManaListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterInt(this);
-}
-void ManaParser::IntContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<ManaListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitInt(this);
-}
 
 ManaParser::ArithmeticContext* ManaParser::arithmetic() {
    return arithmetic(0);
@@ -650,8 +745,8 @@ ManaParser::ArithmeticContext* ManaParser::arithmetic(int precedence) {
   ManaParser::ArithmeticContext *_localctx = _tracker.createInstance<ArithmeticContext>(_ctx, parentState);
   ManaParser::ArithmeticContext *previousContext = _localctx;
   (void)previousContext; // Silence compiler, in case the context is not used by generated code.
-  size_t startState = 12;
-  enterRecursionRule(_localctx, 12, ManaParser::RuleArithmetic, precedence);
+  size_t startState = 14;
+  enterRecursionRule(_localctx, 14, ManaParser::RuleArithmetic, precedence);
 
     size_t _la = 0;
 
@@ -665,38 +760,31 @@ ManaParser::ArithmeticContext* ManaParser::arithmetic(int precedence) {
   try {
     size_t alt;
     enterOuterAlt(_localctx, 1);
-    setState(60);
+    setState(67);
     _errHandler->sync(this);
     switch (_input->LA(1)) {
-      case ManaParser::INT: {
-        _localctx = _tracker.createInstance<IntContext>(_localctx);
+      case ManaParser::ID:
+      case ManaParser::INT:
+      case ManaParser::FLOAT: {
+        _localctx = _tracker.createInstance<SingleValueContext>(_localctx);
         _ctx = _localctx;
         previousContext = _localctx;
 
-        setState(54);
-        match(ManaParser::INT);
+        setState(62);
+        atom();
         break;
       }
 
-      case ManaParser::ID: {
-        _localctx = _tracker.createInstance<IdentifierContext>(_localctx);
-        _ctx = _localctx;
-        previousContext = _localctx;
-        setState(55);
-        match(ManaParser::ID);
-        break;
-      }
-
-      case ManaParser::T__0: {
+      case ManaParser::T__2: {
         _localctx = _tracker.createInstance<ParensExprContext>(_localctx);
         _ctx = _localctx;
         previousContext = _localctx;
-        setState(56);
-        match(ManaParser::T__0);
-        setState(57);
+        setState(63);
+        match(ManaParser::T__2);
+        setState(64);
         arithmetic(0);
-        setState(58);
-        match(ManaParser::T__1);
+        setState(65);
+        match(ManaParser::T__3);
         break;
       }
 
@@ -704,26 +792,26 @@ ManaParser::ArithmeticContext* ManaParser::arithmetic(int precedence) {
       throw NoViableAltException(this);
     }
     _ctx->stop = _input->LT(-1);
-    setState(70);
+    setState(77);
     _errHandler->sync(this);
-    alt = getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 6, _ctx);
+    alt = getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 7, _ctx);
     while (alt != 2 && alt != atn::ATN::INVALID_ALT_NUMBER) {
       if (alt == 1) {
         if (!_parseListeners.empty())
           triggerExitRuleEvent();
         previousContext = _localctx;
-        setState(68);
+        setState(75);
         _errHandler->sync(this);
-        switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 5, _ctx)) {
+        switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 6, _ctx)) {
         case 1: {
           auto newContext = _tracker.createInstance<MulDivContext>(_tracker.createInstance<ArithmeticContext>(parentContext, parentState));
           _localctx = newContext;
           newContext->left = previousContext;
           pushNewRecursionContext(newContext, startState, RuleArithmetic);
-          setState(62);
+          setState(69);
 
-          if (!(precpred(_ctx, 5))) throw FailedPredicateException(this, "precpred(_ctx, 5)");
-          setState(63);
+          if (!(precpred(_ctx, 4))) throw FailedPredicateException(this, "precpred(_ctx, 4)");
+          setState(70);
           antlrcpp::downCast<MulDivContext *>(_localctx)->op = _input->LT(1);
           _la = _input->LA(1);
           if (!(_la == ManaParser::MUL
@@ -735,8 +823,8 @@ ManaParser::ArithmeticContext* ManaParser::arithmetic(int precedence) {
             _errHandler->reportMatch(this);
             consume();
           }
-          setState(64);
-          antlrcpp::downCast<MulDivContext *>(_localctx)->right = arithmetic(6);
+          setState(71);
+          antlrcpp::downCast<MulDivContext *>(_localctx)->right = arithmetic(5);
           break;
         }
 
@@ -745,10 +833,10 @@ ManaParser::ArithmeticContext* ManaParser::arithmetic(int precedence) {
           _localctx = newContext;
           newContext->left = previousContext;
           pushNewRecursionContext(newContext, startState, RuleArithmetic);
-          setState(65);
+          setState(72);
 
-          if (!(precpred(_ctx, 4))) throw FailedPredicateException(this, "precpred(_ctx, 4)");
-          setState(66);
+          if (!(precpred(_ctx, 3))) throw FailedPredicateException(this, "precpred(_ctx, 3)");
+          setState(73);
           antlrcpp::downCast<AddSubContext *>(_localctx)->op = _input->LT(1);
           _la = _input->LA(1);
           if (!(_la == ManaParser::ADD
@@ -760,8 +848,8 @@ ManaParser::ArithmeticContext* ManaParser::arithmetic(int precedence) {
             _errHandler->reportMatch(this);
             consume();
           }
-          setState(67);
-          antlrcpp::downCast<AddSubContext *>(_localctx)->right = arithmetic(5);
+          setState(74);
+          antlrcpp::downCast<AddSubContext *>(_localctx)->right = arithmetic(4);
           break;
         }
 
@@ -769,9 +857,9 @@ ManaParser::ArithmeticContext* ManaParser::arithmetic(int precedence) {
           break;
         } 
       }
-      setState(72);
+      setState(79);
       _errHandler->sync(this);
-      alt = getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 6, _ctx);
+      alt = getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 7, _ctx);
     }
   }
   catch (RecognitionException &e) {
@@ -784,7 +872,7 @@ ManaParser::ArithmeticContext* ManaParser::arithmetic(int precedence) {
 
 bool ManaParser::sempred(RuleContext *context, size_t ruleIndex, size_t predicateIndex) {
   switch (ruleIndex) {
-    case 6: return arithmeticSempred(antlrcpp::downCast<ArithmeticContext *>(context), predicateIndex);
+    case 7: return arithmeticSempred(antlrcpp::downCast<ArithmeticContext *>(context), predicateIndex);
 
   default:
     break;
@@ -794,8 +882,8 @@ bool ManaParser::sempred(RuleContext *context, size_t ruleIndex, size_t predicat
 
 bool ManaParser::arithmeticSempred(ArithmeticContext *_localctx, size_t predicateIndex) {
   switch (predicateIndex) {
-    case 0: return precpred(_ctx, 5);
-    case 1: return precpred(_ctx, 4);
+    case 0: return precpred(_ctx, 4);
+    case 1: return precpred(_ctx, 3);
 
   default:
     break;
@@ -812,18 +900,19 @@ atn::ATN ManaParser::_atn;
 std::vector<uint16_t> ManaParser::_serializedATN;
 
 std::vector<std::string> ManaParser::_ruleNames = {
-  "src", "statement", "function", "expression", "declaration", "scope", 
-  "arithmetic"
+  "src", "statement", "scope", "function", "declaration", "expression", 
+  "atom", "arithmetic"
 };
 
 std::vector<std::string> ManaParser::_literalNames = {
-  "", "'('", "')'", "'{'", "'}'", "'fn'", "'let'", "'i32'", "'true'", "'false'", 
-  "';'", "'='", "'*'", "'/'", "'+'", "'-'"
+  "", "'{'", "'}'", "'('", "')'", "'fn'", "'let'", "'true'", "'false'", 
+  "'i32'", "'f32'", "';'", "'='", "'*'", "'/'", "'+'", "'-'"
 };
 
 std::vector<std::string> ManaParser::_symbolicNames = {
-  "", "", "", "", "", "KEY_FN", "KEY_LET", "TYPE_I32", "CONST_TRUE", "CONST_FALSE", 
-  "END", "ASSIGN", "MUL", "DIV", "ADD", "SUB", "ID", "INT", "NEWLINE", "WS"
+  "", "", "", "", "", "KEY_FN", "KEY_LET", "KEY_TRUE", "KEY_FALSE", "TYPE_I32", 
+  "TYPE_F32", "END", "ASSIGN", "MUL", "DIV", "ADD", "SUB", "ID", "INT", 
+  "FLOAT", "NEWLINE", "WS"
 };
 
 dfa::Vocabulary ManaParser::_vocabulary(_literalNames, _symbolicNames);
@@ -846,57 +935,63 @@ ManaParser::Initializer::Initializer() {
 
   static const uint16_t serializedATNSegment0[] = {
     0x3, 0x608b, 0xa72a, 0x8133, 0xb9ed, 0x417c, 0x3be7, 0x7786, 0x5964, 
-       0x3, 0x15, 0x4c, 0x4, 0x2, 0x9, 0x2, 0x4, 0x3, 0x9, 0x3, 0x4, 0x4, 
+       0x3, 0x17, 0x53, 0x4, 0x2, 0x9, 0x2, 0x4, 0x3, 0x9, 0x3, 0x4, 0x4, 
        0x9, 0x4, 0x4, 0x5, 0x9, 0x5, 0x4, 0x6, 0x9, 0x6, 0x4, 0x7, 0x9, 
-       0x7, 0x4, 0x8, 0x9, 0x8, 0x3, 0x2, 0x6, 0x2, 0x12, 0xa, 0x2, 0xd, 
-       0x2, 0xe, 0x2, 0x13, 0x3, 0x2, 0x3, 0x2, 0x3, 0x3, 0x3, 0x3, 0x3, 
-       0x3, 0x3, 0x3, 0x3, 0x3, 0x5, 0x3, 0x1d, 0xa, 0x3, 0x3, 0x4, 0x3, 
-       0x4, 0x3, 0x4, 0x3, 0x4, 0x3, 0x4, 0x6, 0x4, 0x24, 0xa, 0x4, 0xd, 
-       0x4, 0xe, 0x4, 0x25, 0x3, 0x5, 0x3, 0x5, 0x3, 0x6, 0x3, 0x6, 0x3, 
-       0x6, 0x3, 0x6, 0x3, 0x6, 0x3, 0x7, 0x3, 0x7, 0x7, 0x7, 0x31, 0xa, 
-       0x7, 0xc, 0x7, 0xe, 0x7, 0x34, 0xb, 0x7, 0x3, 0x7, 0x3, 0x7, 0x3, 
-       0x8, 0x3, 0x8, 0x3, 0x8, 0x3, 0x8, 0x3, 0x8, 0x3, 0x8, 0x3, 0x8, 
-       0x5, 0x8, 0x3f, 0xa, 0x8, 0x3, 0x8, 0x3, 0x8, 0x3, 0x8, 0x3, 0x8, 
-       0x3, 0x8, 0x3, 0x8, 0x7, 0x8, 0x47, 0xa, 0x8, 0xc, 0x8, 0xe, 0x8, 
-       0x4a, 0xb, 0x8, 0x3, 0x8, 0x2, 0x3, 0xe, 0x9, 0x2, 0x4, 0x6, 0x8, 
-       0xa, 0xc, 0xe, 0x2, 0x4, 0x3, 0x2, 0xe, 0xf, 0x3, 0x2, 0x10, 0x11, 
-       0x2, 0x4f, 0x2, 0x11, 0x3, 0x2, 0x2, 0x2, 0x4, 0x1c, 0x3, 0x2, 0x2, 
-       0x2, 0x6, 0x1e, 0x3, 0x2, 0x2, 0x2, 0x8, 0x27, 0x3, 0x2, 0x2, 0x2, 
-       0xa, 0x29, 0x3, 0x2, 0x2, 0x2, 0xc, 0x2e, 0x3, 0x2, 0x2, 0x2, 0xe, 
-       0x3e, 0x3, 0x2, 0x2, 0x2, 0x10, 0x12, 0x5, 0x4, 0x3, 0x2, 0x11, 0x10, 
-       0x3, 0x2, 0x2, 0x2, 0x12, 0x13, 0x3, 0x2, 0x2, 0x2, 0x13, 0x11, 0x3, 
-       0x2, 0x2, 0x2, 0x13, 0x14, 0x3, 0x2, 0x2, 0x2, 0x14, 0x15, 0x3, 0x2, 
-       0x2, 0x2, 0x15, 0x16, 0x7, 0x2, 0x2, 0x3, 0x16, 0x3, 0x3, 0x2, 0x2, 
-       0x2, 0x17, 0x1d, 0x5, 0xc, 0x7, 0x2, 0x18, 0x1d, 0x5, 0x6, 0x4, 0x2, 
-       0x19, 0x1d, 0x5, 0x8, 0x5, 0x2, 0x1a, 0x1d, 0x7, 0xc, 0x2, 0x2, 0x1b, 
-       0x1d, 0x7, 0x14, 0x2, 0x2, 0x1c, 0x17, 0x3, 0x2, 0x2, 0x2, 0x1c, 
-       0x18, 0x3, 0x2, 0x2, 0x2, 0x1c, 0x19, 0x3, 0x2, 0x2, 0x2, 0x1c, 0x1a, 
-       0x3, 0x2, 0x2, 0x2, 0x1c, 0x1b, 0x3, 0x2, 0x2, 0x2, 0x1d, 0x5, 0x3, 
-       0x2, 0x2, 0x2, 0x1e, 0x1f, 0x7, 0x7, 0x2, 0x2, 0x1f, 0x20, 0x7, 0x12, 
-       0x2, 0x2, 0x20, 0x21, 0x7, 0x3, 0x2, 0x2, 0x21, 0x23, 0x7, 0x4, 0x2, 
-       0x2, 0x22, 0x24, 0x5, 0xc, 0x7, 0x2, 0x23, 0x22, 0x3, 0x2, 0x2, 0x2, 
-       0x24, 0x25, 0x3, 0x2, 0x2, 0x2, 0x25, 0x23, 0x3, 0x2, 0x2, 0x2, 0x25, 
-       0x26, 0x3, 0x2, 0x2, 0x2, 0x26, 0x7, 0x3, 0x2, 0x2, 0x2, 0x27, 0x28, 
-       0x5, 0xe, 0x8, 0x2, 0x28, 0x9, 0x3, 0x2, 0x2, 0x2, 0x29, 0x2a, 0x7, 
-       0x8, 0x2, 0x2, 0x2a, 0x2b, 0x7, 0x12, 0x2, 0x2, 0x2b, 0x2c, 0x7, 
-       0xd, 0x2, 0x2, 0x2c, 0x2d, 0x5, 0x8, 0x5, 0x2, 0x2d, 0xb, 0x3, 0x2, 
-       0x2, 0x2, 0x2e, 0x32, 0x7, 0x5, 0x2, 0x2, 0x2f, 0x31, 0x5, 0x4, 0x3, 
-       0x2, 0x30, 0x2f, 0x3, 0x2, 0x2, 0x2, 0x31, 0x34, 0x3, 0x2, 0x2, 0x2, 
-       0x32, 0x30, 0x3, 0x2, 0x2, 0x2, 0x32, 0x33, 0x3, 0x2, 0x2, 0x2, 0x33, 
-       0x35, 0x3, 0x2, 0x2, 0x2, 0x34, 0x32, 0x3, 0x2, 0x2, 0x2, 0x35, 0x36, 
-       0x7, 0x6, 0x2, 0x2, 0x36, 0xd, 0x3, 0x2, 0x2, 0x2, 0x37, 0x38, 0x8, 
-       0x8, 0x1, 0x2, 0x38, 0x3f, 0x7, 0x13, 0x2, 0x2, 0x39, 0x3f, 0x7, 
-       0x12, 0x2, 0x2, 0x3a, 0x3b, 0x7, 0x3, 0x2, 0x2, 0x3b, 0x3c, 0x5, 
-       0xe, 0x8, 0x2, 0x3c, 0x3d, 0x7, 0x4, 0x2, 0x2, 0x3d, 0x3f, 0x3, 0x2, 
-       0x2, 0x2, 0x3e, 0x37, 0x3, 0x2, 0x2, 0x2, 0x3e, 0x39, 0x3, 0x2, 0x2, 
-       0x2, 0x3e, 0x3a, 0x3, 0x2, 0x2, 0x2, 0x3f, 0x48, 0x3, 0x2, 0x2, 0x2, 
-       0x40, 0x41, 0xc, 0x7, 0x2, 0x2, 0x41, 0x42, 0x9, 0x2, 0x2, 0x2, 0x42, 
-       0x47, 0x5, 0xe, 0x8, 0x8, 0x43, 0x44, 0xc, 0x6, 0x2, 0x2, 0x44, 0x45, 
-       0x9, 0x3, 0x2, 0x2, 0x45, 0x47, 0x5, 0xe, 0x8, 0x7, 0x46, 0x40, 0x3, 
-       0x2, 0x2, 0x2, 0x46, 0x43, 0x3, 0x2, 0x2, 0x2, 0x47, 0x4a, 0x3, 0x2, 
-       0x2, 0x2, 0x48, 0x46, 0x3, 0x2, 0x2, 0x2, 0x48, 0x49, 0x3, 0x2, 0x2, 
-       0x2, 0x49, 0xf, 0x3, 0x2, 0x2, 0x2, 0x4a, 0x48, 0x3, 0x2, 0x2, 0x2, 
-       0x9, 0x13, 0x1c, 0x25, 0x32, 0x3e, 0x46, 0x48, 
+       0x7, 0x4, 0x8, 0x9, 0x8, 0x4, 0x9, 0x9, 0x9, 0x3, 0x2, 0x6, 0x2, 
+       0x14, 0xa, 0x2, 0xd, 0x2, 0xe, 0x2, 0x15, 0x3, 0x2, 0x3, 0x2, 0x3, 
+       0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 
+       0x5, 0x3, 0x21, 0xa, 0x3, 0x3, 0x4, 0x3, 0x4, 0x7, 0x4, 0x25, 0xa, 
+       0x4, 0xc, 0x4, 0xe, 0x4, 0x28, 0xb, 0x4, 0x3, 0x4, 0x3, 0x4, 0x3, 
+       0x5, 0x3, 0x5, 0x3, 0x5, 0x3, 0x5, 0x3, 0x5, 0x6, 0x5, 0x31, 0xa, 
+       0x5, 0xd, 0x5, 0xe, 0x5, 0x32, 0x3, 0x6, 0x3, 0x6, 0x3, 0x6, 0x3, 
+       0x6, 0x3, 0x6, 0x3, 0x7, 0x3, 0x7, 0x3, 0x8, 0x3, 0x8, 0x5, 0x8, 
+       0x3e, 0xa, 0x8, 0x3, 0x9, 0x3, 0x9, 0x3, 0x9, 0x3, 0x9, 0x3, 0x9, 
+       0x3, 0x9, 0x5, 0x9, 0x46, 0xa, 0x9, 0x3, 0x9, 0x3, 0x9, 0x3, 0x9, 
+       0x3, 0x9, 0x3, 0x9, 0x3, 0x9, 0x7, 0x9, 0x4e, 0xa, 0x9, 0xc, 0x9, 
+       0xe, 0x9, 0x51, 0xb, 0x9, 0x3, 0x9, 0x2, 0x3, 0x10, 0xa, 0x2, 0x4, 
+       0x6, 0x8, 0xa, 0xc, 0xe, 0x10, 0x2, 0x5, 0x3, 0x2, 0x14, 0x15, 0x3, 
+       0x2, 0xf, 0x10, 0x3, 0x2, 0x11, 0x12, 0x2, 0x57, 0x2, 0x13, 0x3, 
+       0x2, 0x2, 0x2, 0x4, 0x20, 0x3, 0x2, 0x2, 0x2, 0x6, 0x22, 0x3, 0x2, 
+       0x2, 0x2, 0x8, 0x2b, 0x3, 0x2, 0x2, 0x2, 0xa, 0x34, 0x3, 0x2, 0x2, 
+       0x2, 0xc, 0x39, 0x3, 0x2, 0x2, 0x2, 0xe, 0x3d, 0x3, 0x2, 0x2, 0x2, 
+       0x10, 0x45, 0x3, 0x2, 0x2, 0x2, 0x12, 0x14, 0x5, 0x4, 0x3, 0x2, 0x13, 
+       0x12, 0x3, 0x2, 0x2, 0x2, 0x14, 0x15, 0x3, 0x2, 0x2, 0x2, 0x15, 0x13, 
+       0x3, 0x2, 0x2, 0x2, 0x15, 0x16, 0x3, 0x2, 0x2, 0x2, 0x16, 0x17, 0x3, 
+       0x2, 0x2, 0x2, 0x17, 0x18, 0x7, 0x2, 0x2, 0x3, 0x18, 0x3, 0x3, 0x2, 
+       0x2, 0x2, 0x19, 0x21, 0x5, 0x6, 0x4, 0x2, 0x1a, 0x21, 0x5, 0x8, 0x5, 
+       0x2, 0x1b, 0x21, 0x5, 0xa, 0x6, 0x2, 0x1c, 0x21, 0x5, 0xc, 0x7, 0x2, 
+       0x1d, 0x21, 0x5, 0xe, 0x8, 0x2, 0x1e, 0x21, 0x7, 0xd, 0x2, 0x2, 0x1f, 
+       0x21, 0x7, 0x16, 0x2, 0x2, 0x20, 0x19, 0x3, 0x2, 0x2, 0x2, 0x20, 
+       0x1a, 0x3, 0x2, 0x2, 0x2, 0x20, 0x1b, 0x3, 0x2, 0x2, 0x2, 0x20, 0x1c, 
+       0x3, 0x2, 0x2, 0x2, 0x20, 0x1d, 0x3, 0x2, 0x2, 0x2, 0x20, 0x1e, 0x3, 
+       0x2, 0x2, 0x2, 0x20, 0x1f, 0x3, 0x2, 0x2, 0x2, 0x21, 0x5, 0x3, 0x2, 
+       0x2, 0x2, 0x22, 0x26, 0x7, 0x3, 0x2, 0x2, 0x23, 0x25, 0x5, 0x4, 0x3, 
+       0x2, 0x24, 0x23, 0x3, 0x2, 0x2, 0x2, 0x25, 0x28, 0x3, 0x2, 0x2, 0x2, 
+       0x26, 0x24, 0x3, 0x2, 0x2, 0x2, 0x26, 0x27, 0x3, 0x2, 0x2, 0x2, 0x27, 
+       0x29, 0x3, 0x2, 0x2, 0x2, 0x28, 0x26, 0x3, 0x2, 0x2, 0x2, 0x29, 0x2a, 
+       0x7, 0x4, 0x2, 0x2, 0x2a, 0x7, 0x3, 0x2, 0x2, 0x2, 0x2b, 0x2c, 0x7, 
+       0x7, 0x2, 0x2, 0x2c, 0x2d, 0x7, 0x13, 0x2, 0x2, 0x2d, 0x2e, 0x7, 
+       0x5, 0x2, 0x2, 0x2e, 0x30, 0x7, 0x6, 0x2, 0x2, 0x2f, 0x31, 0x5, 0x6, 
+       0x4, 0x2, 0x30, 0x2f, 0x3, 0x2, 0x2, 0x2, 0x31, 0x32, 0x3, 0x2, 0x2, 
+       0x2, 0x32, 0x30, 0x3, 0x2, 0x2, 0x2, 0x32, 0x33, 0x3, 0x2, 0x2, 0x2, 
+       0x33, 0x9, 0x3, 0x2, 0x2, 0x2, 0x34, 0x35, 0x7, 0x8, 0x2, 0x2, 0x35, 
+       0x36, 0x7, 0x13, 0x2, 0x2, 0x36, 0x37, 0x7, 0xe, 0x2, 0x2, 0x37, 
+       0x38, 0x5, 0xc, 0x7, 0x2, 0x38, 0xb, 0x3, 0x2, 0x2, 0x2, 0x39, 0x3a, 
+       0x5, 0x10, 0x9, 0x2, 0x3a, 0xd, 0x3, 0x2, 0x2, 0x2, 0x3b, 0x3e, 0x9, 
+       0x2, 0x2, 0x2, 0x3c, 0x3e, 0x7, 0x13, 0x2, 0x2, 0x3d, 0x3b, 0x3, 
+       0x2, 0x2, 0x2, 0x3d, 0x3c, 0x3, 0x2, 0x2, 0x2, 0x3e, 0xf, 0x3, 0x2, 
+       0x2, 0x2, 0x3f, 0x40, 0x8, 0x9, 0x1, 0x2, 0x40, 0x46, 0x5, 0xe, 0x8, 
+       0x2, 0x41, 0x42, 0x7, 0x5, 0x2, 0x2, 0x42, 0x43, 0x5, 0x10, 0x9, 
+       0x2, 0x43, 0x44, 0x7, 0x6, 0x2, 0x2, 0x44, 0x46, 0x3, 0x2, 0x2, 0x2, 
+       0x45, 0x3f, 0x3, 0x2, 0x2, 0x2, 0x45, 0x41, 0x3, 0x2, 0x2, 0x2, 0x46, 
+       0x4f, 0x3, 0x2, 0x2, 0x2, 0x47, 0x48, 0xc, 0x6, 0x2, 0x2, 0x48, 0x49, 
+       0x9, 0x3, 0x2, 0x2, 0x49, 0x4e, 0x5, 0x10, 0x9, 0x7, 0x4a, 0x4b, 
+       0xc, 0x5, 0x2, 0x2, 0x4b, 0x4c, 0x9, 0x4, 0x2, 0x2, 0x4c, 0x4e, 0x5, 
+       0x10, 0x9, 0x6, 0x4d, 0x47, 0x3, 0x2, 0x2, 0x2, 0x4d, 0x4a, 0x3, 
+       0x2, 0x2, 0x2, 0x4e, 0x51, 0x3, 0x2, 0x2, 0x2, 0x4f, 0x4d, 0x3, 0x2, 
+       0x2, 0x2, 0x4f, 0x50, 0x3, 0x2, 0x2, 0x2, 0x50, 0x11, 0x3, 0x2, 0x2, 
+       0x2, 0x51, 0x4f, 0x3, 0x2, 0x2, 0x2, 0xa, 0x15, 0x20, 0x26, 0x32, 
+       0x3d, 0x45, 0x4d, 0x4f, 
   };
 
   _serializedATN.insert(_serializedATN.end(), serializedATNSegment0,

@@ -14,6 +14,7 @@ namespace ast
 
     public:
         listener(const ManaParser& a_parser);
+
         virtual void enterSrc(ManaParser::SrcContext* ctx) override;
         virtual void exitSrc(ManaParser::SrcContext* ctx) override;
 
@@ -28,6 +29,9 @@ namespace ast
 
         virtual void enterExpression(ManaParser::ExpressionContext* ctx) override;
         virtual void exitExpression(ManaParser::ExpressionContext* ctx) override;
+
+        virtual void enterDeclaration(ManaParser::DeclarationContext* ctx) override;
+        virtual void exitDeclaration(ManaParser::DeclarationContext* ctx) override;
 
         virtual void enterAddSub(ManaParser::AddSubContext* ctx) override;
         virtual void exitAddSub(ManaParser::AddSubContext* ctx) override;

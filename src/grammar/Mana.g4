@@ -1,46 +1,54 @@
 grammar Mana;
 
-src : statement+ EOF ;
+src : statement+ EOF;
 
-statement : scope 
-		  | function 
-		  | expression 
-		  | END 
-		  | NEWLINE;
-
-function : KEY_FN ID '(' ')' scope+ ;
-
-expression : arithmetic ;
-
-declaration : KEY_LET ID ASSIGN expression ;
-
-scope : '{' statement* '}' ;
-
-arithmetic :
-	left = arithmetic op = (MUL | DIV) right = arithmetic	# MulDiv
-	| left = arithmetic op = (ADD | SUB) right = arithmetic	# AddSub
-	| INT													# Int
-	| ID													# Identifier
-	| '(' arithmetic ')'									# ParensExpr
+statement:
+	scope
+	| function
+	| declaration
+	| expression
+	| atom
+	| END
+	| NEWLINE
 	;
 
-KEY_FN	: 'fn';
-KEY_LET	: 'let';
+scope : '{' statement* '}';
+
+function : KEY_FN ID '(' ')' scope+;
+
+declaration : KEY_LET iden=ID ASSIGN expr=expression;
+
+expression : arithmetic;
+
+atom : (INT | FLOAT) | ID;
+
+arithmetic:
+	left=arithmetic op=(MUL | DIV) right=arithmetic	  # MulDiv
+	| left=arithmetic op=(ADD | SUB) right=arithmetic # AddSub
+	| atom											  # SingleValue
+	| '(' arithmetic ')'							  # ParensExpr
+	;
+
+// Lexical rules
+KEY_FN		: 'fn';
+KEY_LET		: 'let';
+KEY_TRUE	: 'true';
+KEY_FALSE	: 'false';
 
 TYPE_I32 : 'i32';
+TYPE_F32 : 'f32';
 
-CONST_TRUE : 'true' ;
-CONST_FALSE : 'false' ;
-
-END : ';';
-
+END		: ';';
 ASSIGN	: '=';
-MUL		: '*';
-DIV		: '/';
-ADD		: '+';
-SUB		: '-';
 
-ID		: [a-zA-Z]+INT*;
+MUL	: '*';
+DIV	: '/';
+ADD	: '+';
+SUB	: '-';
+
+ID		: [a-zA-Z]+ INT*;
 INT		: [0-9]+;
+FLOAT   : INT+'.'INT+'f'?;
+
 NEWLINE	: '\r'? '\n';
 WS		: [ \t]+ -> skip;
