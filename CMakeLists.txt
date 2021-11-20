@@ -26,6 +26,7 @@ llvm_map_components_to_libnames(llvm_libs
 
 add_executable(mana 
     src/main.cpp 
+    src/nyx/lexer.cpp
 )
 
 target_include_directories(mana PRIVATE
