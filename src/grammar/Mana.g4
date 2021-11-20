@@ -16,16 +16,18 @@ scope : '{' statement* '}';
 
 function : KEY_FN ID '(' ')' scope+;
 
-declaration : KEY_LET iden=ID ASSIGN expr=expression;
+declaration : KEY_LET ID ASSIGN expression;
 
 expression : arithmetic;
 
-atom : (INT | FLOAT) | ID;
+atom : literal | ID;
+
+literal : INT | FLOAT ;
 
 arithmetic:
 	left=arithmetic op=(MUL | DIV) right=arithmetic	  # MulDiv
 	| left=arithmetic op=(ADD | SUB) right=arithmetic # AddSub
-	| atom											  # SingleValue
+	| literal										  # SingleValue
 	| '(' arithmetic ')'							  # ParensExpr
 	;
 

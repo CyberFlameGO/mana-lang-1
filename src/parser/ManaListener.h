@@ -35,6 +35,9 @@ public:
   virtual void enterAtom(ManaParser::AtomContext *ctx) = 0;
   virtual void exitAtom(ManaParser::AtomContext *ctx) = 0;
 
+  virtual void enterLiteral(ManaParser::LiteralContext *ctx) = 0;
+  virtual void exitLiteral(ManaParser::LiteralContext *ctx) = 0;
+
   virtual void enterSingleValue(ManaParser::SingleValueContext *ctx) = 0;
   virtual void exitSingleValue(ManaParser::SingleValueContext *ctx) = 0;
 

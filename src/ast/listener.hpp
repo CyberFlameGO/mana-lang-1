@@ -2,6 +2,9 @@
 
 #include "parser/ManaBaseListener.h"
 
+#include <unordered_map>
+#include <string>
+
 class ManaParser;
 
 namespace ast
@@ -10,7 +13,8 @@ namespace ast
     class listener : public ManaBaseListener
     {
     private:
-        const ManaParser &parser;
+        const ManaParser& parser;
+        std::unordered_map<std::string, int> variable_table;
 
     public:
         listener(const ManaParser& a_parser);

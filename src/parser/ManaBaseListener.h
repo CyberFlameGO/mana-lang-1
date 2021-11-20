@@ -37,6 +37,9 @@ public:
   virtual void enterAtom(ManaParser::AtomContext * /*ctx*/) override { }
   virtual void exitAtom(ManaParser::AtomContext * /*ctx*/) override { }
 
+  virtual void enterLiteral(ManaParser::LiteralContext * /*ctx*/) override { }
+  virtual void exitLiteral(ManaParser::LiteralContext * /*ctx*/) override { }
+
   virtual void enterSingleValue(ManaParser::SingleValueContext * /*ctx*/) override { }
   virtual void exitSingleValue(ManaParser::SingleValueContext * /*ctx*/) override { }
 

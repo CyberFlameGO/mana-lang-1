@@ -20,7 +20,7 @@ public:
 
   enum {
     RuleSrc = 0, RuleStatement = 1, RuleScope = 2, RuleFunction = 3, RuleDeclaration = 4, 
-    RuleExpression = 5, RuleAtom = 6, RuleArithmetic = 7
+    RuleExpression = 5, RuleAtom = 6, RuleLiteral = 7, RuleArithmetic = 8
   };
 
   explicit ManaParser(antlr4::TokenStream *input);
@@ -40,6 +40,7 @@ public:
   class DeclarationContext;
   class ExpressionContext;
   class AtomContext;
+  class LiteralContext;
   class ArithmeticContext; 
 
   class  SrcContext : public antlr4::ParserRuleContext {
@@ -108,13 +109,11 @@ public:
 
   class  DeclarationContext : public antlr4::ParserRuleContext {
   public:
-    antlr4::Token *iden = nullptr;
-    ManaParser::ExpressionContext *expr = nullptr;
     DeclarationContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *KEY_LET();
-    antlr4::tree::TerminalNode *ASSIGN();
     antlr4::tree::TerminalNode *ID();
+    antlr4::tree::TerminalNode *ASSIGN();
     ExpressionContext *expression();
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -141,8 +140,7 @@ public:
   public:
     AtomContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *INT();
-    antlr4::tree::TerminalNode *FLOAT();
+    LiteralContext *literal();
     antlr4::tree::TerminalNode *ID();
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -151,6 +149,20 @@ public:
   };
 
   AtomContext* atom();
+
+  class  LiteralContext : public antlr4::ParserRuleContext {
+  public:
+    LiteralContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *INT();
+    antlr4::tree::TerminalNode *FLOAT();
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+   
+  };
+
+  LiteralContext* literal();
 
   class  ArithmeticContext : public antlr4::ParserRuleContext {
   public:
@@ -169,7 +181,7 @@ public:
   public:
     SingleValueContext(ArithmeticContext *ctx);
 
-    AtomContext *atom();
+    LiteralContext *literal();
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
   };
