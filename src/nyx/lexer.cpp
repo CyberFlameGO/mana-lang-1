@@ -2,15 +2,14 @@
 
 #include <locale>
 
-lexer::lexer(std::stringstream &stream)
+lexer::lexer(std::stringstream& source)
     : token_position(1, 0)
-    , filestream(stream)
+    , src(source)
     , current_char(' ')
 {}
 
 void lexer::tokenize()
 {
-    // what
     while (next_char()) {
         // Ignore whitespace
         while (std::isspace(current_char)) {
@@ -18,28 +17,27 @@ void lexer::tokenize()
         }
 
         if (std::isdigit(current_char)) {
-            process_numbers();
+            process_number();
         }
 
         // Track newlines
         if (current_char == '\n') {
             ++token_position.line;
             token_position.column = 0; // Column will always get incremented on next_char(), so we reset it to 0
-
         }
     }
 
-    tokens.emplace_back(std::make_pair(token(token::type::eof, "EOF"), filepos(token_position)));
+    tokens.emplace_back(std::make_pair(token(token::type::EoF, "EOF"), filepos(token_position)));
     print_tokens();
 }
 
 void lexer::print_tokens() const
 {
-    for (const auto &tk : tokens) {
+    for (const auto& tk : tokens) {
         std::string type;
-        if (tk.first._type == token::type::eof) {
+        if (tk.first._type == token::type::EoF) {
             type = "EOF";
-        } else if (tk.first._type == token::type::num_float) {
+        } else if (tk.first._type == token::type::LIT_FLOAT) {
             type = "Float";
         } else {
             type = "Int";
@@ -55,32 +53,32 @@ void lexer::print_tokens() const
 bool lexer::next_char()
 {
     ++token_position.column;
-
-    if (!filestream.get(current_char)) {
-        return false;
-    }
-    return true;
+    return (!src.get(current_char));
 }
 
-void lexer::process_numbers()
+void lexer::process_number()
 {
-    bool is_float = false;
     std::string num_string;
     const filepos current_pos(token_position);
 
-    do {
-        num_string += current_char;
-        is_float = (current_char == '.');
+    // We define a lambda because we need to potentially re-run the integer processing code,
+    // in order to process a float. This is better than recursion as the part of code we
+    // wish to repeat is very small.
+    const auto process = [&]() {
+        do {
+            num_string += current_char;
 
-    } while (next_char() && (std::isdigit(current_char)) || current_char == '.');
+        } while (next_char() && (std::isdigit(current_char)));
+    };
 
-    if (is_float && current_char == '.') {
-        spdlog::error("Yea that ain't a float buddy");
-        return;
+    process();
+
+    token::type tktype = token::type::LIT_INT;
+
+    if (current_char == '.') {
+        process();
+        tktype = token::type::LIT_FLOAT;
     }
 
-    using tktype = token::type;
-    tktype t = (is_float ? tktype::num_float : tktype::num_int);
-
-    tokens.emplace_back(std::make_pair(token(t, num_string), current_pos));
+    tokens.emplace_back(std::make_pair(token(tktype, num_string), current_pos));
 }

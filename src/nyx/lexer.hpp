@@ -20,41 +20,41 @@ struct filepos {
 struct token {
 public:
     enum class type {
-        invalid = -999,
-        eof,
+        EoF = -999,
 
-        num_int,
-        num_float,
+        LIT_INT,
+        LIT_FLOAT,
 
-        add,
-        mul,
-        div,
-        sub,
+        ADD,
+        MUL,
+        DIV,
+        SUB,
     };
 
 public:
     const type _type;
     const std::string value;
 
-    token(const type token_type, const std::string &val)
+    token(const type token_type, const std::string& val)
         : _type(token_type)
         , value(val)
     {}
 };
 
 struct lexer {
-    lexer(std::stringstream &stream);
+public:
+    lexer(std::stringstream& source);
 
     void tokenize();
     void print_tokens() const;
 
 private:
     bool next_char();
-    void process_numbers();
+    void process_number();
 
 private:
     filepos token_position;
-    std::stringstream &filestream;
+    std::stringstream& src;
     char current_char;
     std::vector<std::pair<token, filepos>> tokens;
 };
