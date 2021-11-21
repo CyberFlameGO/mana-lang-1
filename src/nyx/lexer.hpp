@@ -24,6 +24,7 @@ public:
         eof,
 
         num_int,
+        num_float,
 
         add,
         mul,

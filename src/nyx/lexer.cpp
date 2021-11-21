@@ -17,12 +17,15 @@ void lexer::tokenize()
             next_char();
         }
 
-        process_numbers();
+        if (std::isdigit(current_char)) {
+            process_numbers();
+        }
 
         // Track newlines
         if (current_char == '\n') {
             ++token_position.line;
-            token_position.column = 0; // Column will always get incremented on next_char(),so we reset it to 0
+            token_position.column = 0; // Column will always get incremented on next_char(), so we reset it to 0
+
         }
     }
 
@@ -36,8 +39,10 @@ void lexer::print_tokens() const
         std::string type;
         if (tk.first._type == token::type::eof) {
             type = "EOF";
+        } else if (tk.first._type == token::type::num_float) {
+            type = "Float";
         } else {
-            type = "Number";
+            type = "Int";
         }
         spdlog::debug("Line: {} | Col: {} | Type: {} | Value: {}",
                       tk.second.line,
@@ -59,15 +64,23 @@ bool lexer::next_char()
 
 void lexer::process_numbers()
 {
-    if (std::isdigit(current_char)) {
-        std::string num_string;
-        const filepos current_pos(token_position);
+    bool is_float = false;
+    std::string num_string;
+    const filepos current_pos(token_position);
 
-        do {
-            num_string += current_char;
+    do {
+        num_string += current_char;
+        is_float = (current_char == '.');
 
-        } while (next_char() && (std::isdigit(current_char) || current_char == '.'));
+    } while (next_char() && (std::isdigit(current_char)) || current_char == '.');
 
-        tokens.emplace_back(std::make_pair(token(token::type::num_int, num_string), current_pos));
+    if (is_float && current_char == '.') {
+        spdlog::error("Yea that ain't a float buddy");
+        return;
     }
+
+    using tktype = token::type;
+    tktype t = (is_float ? tktype::num_float : tktype::num_int);
+
+    tokens.emplace_back(std::make_pair(token(t, num_string), current_pos));
 }
