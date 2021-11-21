@@ -53,7 +53,7 @@ void lexer::print_tokens() const
 bool lexer::next_char()
 {
     ++token_position.column;
-    return (!src.get(current_char));
+    return (src.get(current_char) ? true : false);
 }
 
 void lexer::process_number()
