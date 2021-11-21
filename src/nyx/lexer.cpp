@@ -8,7 +8,10 @@ lexer::lexer(std::stringstream& stream)
     , current_char(' ')
 {}
 
-void lexer::tokenize() {
+void
+lexer::tokenize()
+{
+    // what
     while (next_char()) {
         // Ignore whitespace
         while (std::isspace(current_char)) {
@@ -20,7 +23,7 @@ void lexer::tokenize() {
         // Track newlines
         if (current_char == '\n') {
             ++token_position.line;
-            token_position.column = 0;  // Column will always get incremented on next_char(),so we reset it to 0
+            token_position.column = 0; // Column will always get incremented on next_char(),so we reset it to 0
         }
     }
 
@@ -28,21 +31,27 @@ void lexer::tokenize() {
     print_tokens();
 }
 
-void lexer::print_tokens() const {
+void
+lexer::print_tokens() const
+{
     for (const auto& tk : tokens) {
         std::string type;
         if (tk.first.type == tokentype::eof) {
             type = "EOF";
-        }
-        else {
+        } else {
             type = "Number";
         }
-        spdlog::debug("Line: {} | Col: {} | Type: {} | Value: {}", tk.second.line, tk.second.column, type,
-            tk.first.value);
+        spdlog::debug("Line: {} | Col: {} | Type: {} | Value: {}",
+                      tk.second.line,
+                      tk.second.column,
+                      type,
+                      tk.first.value);
     }
 }
 
-bool lexer::next_char() {
+bool
+lexer::next_char()
+{
     ++token_position.column;
 
     if (!filestream.get(current_char)) {
@@ -51,7 +60,9 @@ bool lexer::next_char() {
     return true;
 }
 
-void lexer::process_numbers() {
+void
+lexer::process_numbers()
+{
     if (std::isdigit(current_char)) {
         std::string num_string;
         const filepos current_pos(token_position);
