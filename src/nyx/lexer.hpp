@@ -25,9 +25,9 @@ public:
         LIT_INT,
         LIT_FLOAT,
 
-        ADD,
         MUL,
         DIV,
+        ADD,
         SUB,
     };
 
