@@ -2,14 +2,13 @@
 
 #include <locale>
 
-lexer::lexer(std::stringstream& stream)
+lexer::lexer(std::stringstream &stream)
     : token_position(1, 0)
     , filestream(stream)
     , current_char(' ')
 {}
 
-void
-lexer::tokenize()
+void lexer::tokenize()
 {
     // what
     while (next_char()) {
@@ -27,16 +26,15 @@ lexer::tokenize()
         }
     }
 
-    tokens.emplace_back(std::make_pair(token(tokentype::eof, "EOF"), filepos(token_position)));
+    tokens.emplace_back(std::make_pair(token(token::type::eof, "EOF"), filepos(token_position)));
     print_tokens();
 }
 
-void
-lexer::print_tokens() const
+void lexer::print_tokens() const
 {
-    for (const auto& tk : tokens) {
+    for (const auto &tk : tokens) {
         std::string type;
-        if (tk.first.type == tokentype::eof) {
+        if (tk.first._type == token::type::eof) {
             type = "EOF";
         } else {
             type = "Number";
@@ -49,8 +47,7 @@ lexer::print_tokens() const
     }
 }
 
-bool
-lexer::next_char()
+bool lexer::next_char()
 {
     ++token_position.column;
 
@@ -60,8 +57,7 @@ lexer::next_char()
     return true;
 }
 
-void
-lexer::process_numbers()
+void lexer::process_numbers()
 {
     if (std::isdigit(current_char)) {
         std::string num_string;
@@ -72,6 +68,6 @@ lexer::process_numbers()
 
         } while (next_char() && (std::isdigit(current_char) || current_char == '.'));
 
-        tokens.emplace_back(std::make_pair(token(tokentype::num_int, num_string), current_pos));
+        tokens.emplace_back(std::make_pair(token(token::type::num_int, num_string), current_pos));
     }
 }

@@ -2,7 +2,7 @@
 
 #include <sstream>
 #include <string>
-#include <utility>  // pair
+#include <utility> // pair
 #include <vector>
 
 #include "spdlog/spdlog.h"
@@ -11,36 +11,38 @@ struct filepos {
     uint64_t line;
     uint64_t column;
 
-    filepos(uint64_t lpos, uint64_t colpos) 
-        : line(lpos)
+    filepos(uint64_t linepos, uint64_t colpos)
+        : line(linepos)
         , column(colpos)
     {}
 };
 
-enum class tokentype {
-    invalid = -999,
-    eof,
-
-    num_int,
-
-    add,
-    mul,
-    div,
-    sub,
-};
-
 struct token {
-    const tokentype type;
+public:
+    enum class type {
+        invalid = -999,
+        eof,
+
+        num_int,
+
+        add,
+        mul,
+        div,
+        sub,
+    };
+
+public:
+    const type _type;
     const std::string value;
 
-    token(const tokentype tktype, const std::string& val) 
-        : type(tktype)
-        , value(val) 
+    token(const type token_type, const std::string &val)
+        : _type(token_type)
+        , value(val)
     {}
 };
 
 struct lexer {
-    lexer(std::stringstream& stream);
+    lexer(std::stringstream &stream);
 
     void tokenize();
     void print_tokens() const;
@@ -49,10 +51,9 @@ private:
     bool next_char();
     void process_numbers();
 
-    filepos token_position;
-    std::stringstream& filestream;
-
 private:
+    filepos token_position;
+    std::stringstream &filestream;
     char current_char;
     std::vector<std::pair<token, filepos>> tokens;
 };
