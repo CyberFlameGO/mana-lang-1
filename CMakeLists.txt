@@ -31,6 +31,7 @@ add_executable(mana
 
 target_include_directories(mana PRIVATE
     "src/"
+    "include/"
 )
 
 target_link_libraries(mana PRIVATE 

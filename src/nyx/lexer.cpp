@@ -31,6 +31,7 @@ void lexer::tokenize()
     print_tokens();
 }
 
+/// TODO: Make this print enums directly with magic_enum.hpp
 void lexer::print_tokens() const
 {
     for (const auto& tk : tokens) {
